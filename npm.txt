@@ -1,0 +1,12 @@
+cd client:
+
+npx create-react-app vjkNFT
+npm install @mui/material @emotion/react @emotion/styled react-icons react-router-dom react-router dotenv ethers
+
+cd smart_contract:
+npm install --save-dev hardhat
+
+npx hardhat
+
+
+npm install @openzeppelin/contracts
