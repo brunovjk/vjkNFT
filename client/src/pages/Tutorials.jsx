@@ -10,9 +10,12 @@ import {
   Fab,
   Zoom,
   useScrollTrigger,
+  List,
+  ListItem,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ContractContext } from "../context/ContractContext";
+import { contractAddress } from "../utils/constants";
 
 function ScrollTop(props) {
   const { children } = props;
@@ -123,6 +126,16 @@ export default function Tutorials(props) {
                     >
                       <Typography variant="subtitle2" color="black">
                         MyEther Wallet
+                      </Typography>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link
+                      href="#AddYourToken"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Typography variant="subtitle2" color="black">
+                        Add your Token
                       </Typography>
                     </Link>
                   </Grid>
@@ -285,8 +298,8 @@ export default function Tutorials(props) {
                 <Typography variant="body1" my={1} mb={6}>
                   Coinbase Wallet extension
                 </Typography>
-                <Divider />
               </Link>
+              <Divider />
               <Typography variant="h3" id="WalletMyEther" my={6}>
                 MyEther Wallet
               </Typography>
@@ -294,7 +307,7 @@ export default function Tutorials(props) {
                 MEW (MyEtherWallet) is a free, client-side interface helping you
                 interact with the Ethereum blockchain. Our easy-to-use,
                 open-source platform allows you to generate wallets, interact
-                with smart contracts, and so much more.{" "}
+                with smart contracts, and so much more.
               </Typography>
               <Link
                 target="_blank"
@@ -304,6 +317,48 @@ export default function Tutorials(props) {
               >
                 <Typography variant="body1" my={1} mb={6}>
                   MyEtherWallet extension
+                </Typography>
+              </Link>
+              <Divider />
+              <Typography variant="h3" id="AddYourToken" my={6}>
+                Add your token to your Wallet
+              </Typography>
+              <Typography variant="body1" mb={3}>
+                In this case we will add the new token to MetaMask Wallet, but
+                feel free to use any Wallet Software of your choice.
+              </Typography>
+              <Typography variant="body1" mb={3}>
+                <List>
+                  <ListItem>
+                    1 - Click on 'Import tokens', located at the bottom of the
+                    'Assets' tab on your wallet homepage.
+                  </ListItem>
+                  <ListItem>
+                    2 - Switch to the 'Custom token' tab at the top, and then
+                    enter the token address in the first field.
+                  </ListItem>
+                  <ListItem>
+                    3 - All NFTs use the same contract: {`${contractAddress}`},
+                    Use 0 as Decimal Token
+                  </ListItem>
+                  <ListItem>
+                    4 - You will now see a page asking you to confirm that you
+                    want to add the token.
+                  </ListItem>
+                  <ListItem>
+                    5 - When you click 'Import Tokens', the token type will be
+                    added to your wallet.
+                  </ListItem>
+                </List>
+              </Typography>
+              <Link
+                target="_blank"
+                rel="noopener"
+                style={{ textDecoration: "none" }}
+                href="https://metamask.zendesk.com/hc/en-us/articles/360015489031-How-to-add-unlisted-tokens-custom-tokens-in-MetaMask#h_01FWH492CHY60HWPC28RW0872H"
+              >
+                <Typography variant="body1" my={1} mb={6}>
+                  How to add unlisted tokens (custom tokens) in MetaMask
                 </Typography>
               </Link>
             </Box>

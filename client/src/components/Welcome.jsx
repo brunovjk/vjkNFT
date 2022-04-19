@@ -52,7 +52,7 @@ const Welcome = () => {
                 lineHeight: { xs: "2.25rem", sm: "1" },
               }}
             >
-              on-chain Generated
+              Fully on-chain
               <br /> NFT͟ Collection
             </Typography>
           </Grid>
@@ -67,7 +67,7 @@ const Welcome = () => {
               }}
               fontWeight="300"
             >
-              This project it`s part of{" "}
+              This project it`s part of
               <Link
                 target="_blank"
                 rel="noopener"
@@ -75,6 +75,7 @@ const Welcome = () => {
                 underline="hover"
                 href="http://brunovjk.com/"
               >
+                {" "}
                 brunovjk{" "}
               </Link>
               Portfolio <br /> Connect your Wallet to Ropsten Testnet Network,

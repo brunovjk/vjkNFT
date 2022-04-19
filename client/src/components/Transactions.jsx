@@ -1,17 +1,20 @@
 import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { ContractContext } from "../context/ContractContext";
-import {
-  Box,
-  Grid,
-  Paper,
-  Typography,
-  Link,
-  Chip,
-  CardMedia,
-} from "@mui/material";
+import { Box, Grid, Paper, Typography, Link, CardMedia } from "@mui/material";
 import { shortenAddress } from "../utils/shortenAddress";
+import { contractAddress } from "../utils/constants";
+import { FaEthereum } from "react-icons/fa";
 
-const CollectionCard = ({ addressSender, tokenId, vjkNFT, timestamp }) => {
+const CollectionCard = ({
+  addressSender,
+  tokenId,
+  nameNFT,
+  descriptionNFT,
+  vjkNFT,
+}) => {
+  const linkTokenId = `/${tokenId}`;
+
   return (
     <Box
       m={4}
@@ -22,7 +25,7 @@ const CollectionCard = ({ addressSender, tokenId, vjkNFT, timestamp }) => {
       <Paper
         sx={{
           background: "rgb(39, 51, 89, 0.4)",
-          padding: "0.75rem",
+          padding: "1rem",
         }}
       >
         <Grid
@@ -30,25 +33,40 @@ const CollectionCard = ({ addressSender, tokenId, vjkNFT, timestamp }) => {
           direction="column"
           justifyContent="center"
           alignItems="flex-start"
-          spacing={2}
-          p={2}
         >
           <Grid item>
-            <Link
-              href={`https://ropsten.etherscan.io/address/${addressSender}`}
-              underline="none"
-              color="secondary"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Typography color="secondary" variant="h5">
+              {nameNFT}
+            </Typography>
+          </Grid>
+          <Grid item my={2}>
+            <NavLink
+              to={linkTokenId}
+              state={{
+                addressSender: { addressSender },
+                tokenId: { tokenId },
+                nameNFT: { nameNFT },
+                descriptionNFT: { descriptionNFT },
+                vjkNFT: { vjkNFT },
+              }}
+              style={{ textDecoration: "none" }}
             >
-              <Typography color="secondary" variant="subtitle2">
-                Owner: {shortenAddress(addressSender)}
-              </Typography>
-            </Link>
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "100%",
+                  backgroundColor: "#fff",
+                  border: 0,
+                  cursor: "pointer",
+                }}
+                src={vjkNFT}
+                alt="vjkNFT"
+              />
+            </NavLink>
           </Grid>
           <Grid item>
             <Link
-              href="https://ropsten.etherscan.io/token/0xaf2D86429BCb819EB40C5E71959c8bE7b48c6808/"
+              href={`https://ropsten.etherscan.io/token/${contractAddress}`}
               underline="none"
               color="secondary"
               target="_blank"
@@ -62,31 +80,21 @@ const CollectionCard = ({ addressSender, tokenId, vjkNFT, timestamp }) => {
           <Grid
             item
             sx={{
-              mt: "1rem",
+              width: "100%",
             }}
+            my={1}
           >
-            <CardMedia
-              component="img"
-              sx={{
-                width: "100%",
-                backgroundColor: "#fff",
-                border: 0,
-              }}
-              src={vjkNFT}
-              alt="vjkNFT"
-            />
-          </Grid>
-          <Grid
-            item
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              mt: "1rem",
-            }}
-          >
-            <Chip label={timestamp} color="secondary" variant="outlined" />
+            <Link
+              href={`https://ropsten.etherscan.io/address/${addressSender}`}
+              underline="none"
+              color="secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Typography color="secondary" variant="body2">
+                Owner: {shortenAddress(addressSender)}
+              </Typography>
+            </Link>
           </Grid>
         </Grid>
       </Paper>
@@ -110,7 +118,7 @@ const Collections = () => {
             </Typography>
           ) : (
             <Typography align="center" variant="h4" color="secondary">
-              Latest Collections
+              Latest vjkNFTs minted
             </Typography>
           )}
         </Grid>

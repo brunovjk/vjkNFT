@@ -81,26 +81,31 @@ export const VjkNFTContractProvider = ({ children }) => {
   const chanceSvg = () => {
     let chanceSvg = `${chance.svg({})}`;
 
-    // let chance = require("chance").Chance();
-    // let color = chance.color();
-
-    // let chanceSvg =
-    //   '<svg width="500" height="500" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="' +
-    //   color +
-    //   '" d="M150,0,L75,200,L225,200,Z"></path></svg>';
     let chanceSvgBase64Encoded = Base64.encode(chanceSvg);
     let baseURL = "data:image/svg+xml;base64,";
     let svg = baseURL + chanceSvgBase64Encoded;
     return svg;
   };
 
-  // const svgToImageURI = () => {
-  //   let baseURL = "data:image/svg+xml;base64,";
-  //   let svgBase64Encoded = Base64.encode(bytes((svg)));
-  //   svg = baseURL + svgBase64Encoded;
-  //   return svg
-  // };
-  // console.log(chanceSvg());
+  const chanceNameNFT = () => {
+    let nameNFTFisrt = chance.first();
+    let nameNFTNumber = chance.natural({ min: 1000, max: 9999 });
+    let nameNFT = `${nameNFTFisrt} #${nameNFTNumber}`;
+
+    return nameNFT;
+  };
+
+  const chanceDescriptionNFT = () => {
+    let descriptionNameNFT = chance.name();
+    let descriptionCountryNFT = chance.country({ full: true });
+    let descriptionYearNFT = chance.natural({ min: 1000, max: 1999 });
+    let descriptionGenderNFT = chance.pickone(["He", "She"]);
+    let descriptionAnimalNFT = chance.animal();
+
+    let descriptionNFT = `This work of art is made by ${descriptionNameNFT} from ${descriptionCountryNFT} in ${descriptionYearNFT}. ${descriptionGenderNFT} told us that this peace was expired in a ${descriptionAnimalNFT}.`;
+
+    return descriptionNFT;
+  };
 
   const checkIfWalletisConnected = async () => {
     try {
@@ -131,13 +136,11 @@ export const VjkNFTContractProvider = ({ children }) => {
         (vjkNFTContract) => ({
           addressSender: vjkNFTContract.sender,
           tokenId: vjkNFTContract.tokenId,
+          nameNFT: vjkNFTContract.nameNFT,
+          descriptionNFT: vjkNFTContract.descriptionNFT,
           vjkNFT: vjkNFTContract.svg,
-          timestamp: new Date(
-            vjkNFTContract.timestamp.toNumber() * 1000
-          ).toLocaleString(),
         })
       );
-
       setCollections(structuredCollections);
     } catch (error) {
       console.log(error);
@@ -162,11 +165,17 @@ export const VjkNFTContractProvider = ({ children }) => {
     try {
       if (!ethereum) return alert("Please install metamask");
       setIsLoading(true);
+      let nameNFT = chanceNameNFT();
+      let descriptionNFT = chanceDescriptionNFT();
       let svg = chanceSvg();
-      const vjkNFTContract = getvjkNFTContract();
-      console.log("Collections deployed to:", vjkNFTContract.address);
 
-      const create_tx = await vjkNFTContract.create(`${svg}`);
+      const vjkNFTContract = getvjkNFTContract();
+
+      const create_tx = await vjkNFTContract.safeMint(
+        `${nameNFT}`,
+        `${descriptionNFT}`,
+        `${svg}`
+      );
       console.log(`Loading - ${create_tx.hash}`);
       await create_tx.wait(1);
 
