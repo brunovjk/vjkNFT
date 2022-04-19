@@ -3,56 +3,78 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "base64-sol/base64.sol";
 
 /// @custom:security-contact brunovjk@brunovjk.com
-contract vjkNFT is ERC721, ERC721URIStorage, ERC721Burnable {
+contract vjkNFT is ERC721, ERC721URIStorage, Pausable, Ownable {
     using Counters for Counters.Counter;
-
     Counters.Counter private _tokenIdCounter;
+
+    uint256 public mintPrice = 0 ether;
+    uint256 public maxSupply;
+    mapping(address => uint) public mintedWallets;
 
     struct CollectionStruct {
         address sender;
         string tokenId;
-        string nameNFT;
-        string descriptionNFT;
-        string svg;
+        string uri;
     }
 
-    constructor() ERC721("vjkNFT", "VJK") {}
+    constructor() payable ERC721("vjkNFT", "VJK") {
+        maxSupply = 10000;
+    }
 
     CollectionStruct[] collections;
 
-    function safeMint(string memory nameNFT, string memory descriptionNFT, string memory svg) public {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, formatTokenURI(nameNFT, descriptionNFT, svg, tokenId));
-        collections.push(CollectionStruct(msg.sender, Strings.toString(tokenId), nameNFT, descriptionNFT, svg));
-
+    function setMaxSupply(uint256 _maxSupply) external onlyOwner{
+        maxSupply = _maxSupply;
     }
-    function getAllCollections() public view returns (CollectionStruct[] memory) {
+
+    function _baseURI() internal pure override returns (string memory) {
+        return "data:application/json;base64,";
+    }
+
+    function safeMint(string memory uri) external payable {
+        uint256 tokenId = _tokenIdCounter.current();
+
+        require(mintedWallets[msg.sender] < 1, "exceeds max per wallet");
+        require(msg.value == mintPrice, "wrong value");
+        require(maxSupply > tokenId, "sold out");
+
+        mintedWallets[msg.sender]++;
+        _tokenIdCounter.increment();
+
+        _safeMint(msg.sender, tokenId);
+        string memory baseURI = _baseURI();
+        string memory _TokenURI = string(abi.encodePacked(baseURI, uri));
+        _setTokenURI(tokenId, _TokenURI);
+
+        collections.push(CollectionStruct(msg.sender, Strings.toString(tokenId), uri));
+    }
+
+    function getAllCollections() external view returns (CollectionStruct[] memory) {
         return collections;
     }
-    function formatTokenURI(string memory nameNFT, string memory descriptionNFT, string memory svg, uint256 tokenId) internal pure returns (string memory) {
-        return string(
-                abi.encodePacked(
-                    "data:application/json;base64,",
-                    Base64.encode(
-                        bytes(
-                            abi.encodePacked(
-                                '{"Name":"',nameNFT,'", "Description":"',descriptionNFT,'", "Painting":"',svg,'", "TokenId":"',Strings.toString(tokenId),'" }'
-                            )
-                        )
-                    )
-                )
-            );
+
+    function pause() public onlyOwner {
+        _pause();
     }
 
-    // The following functions are overrides required by Solidity.
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+        // Internal Function
+
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        whenNotPaused
+        override
+    {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);

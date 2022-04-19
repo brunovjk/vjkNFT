@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { contractABI, contractAddress } from "../utils/constants";
 import { Base64 } from "js-base64";
+import { Buffer } from "buffer";
 
 export const ContractContext = React.createContext();
 const { ethereum } = window;
@@ -29,7 +30,6 @@ export const VjkNFTContractProvider = ({ children }) => {
   chance.mixin({
     svg: function (options) {
       options = options || {};
-      options.size = 12;
       options.max_size = 20;
       options.lines = 12;
       options.circles = 12;
@@ -102,9 +102,23 @@ export const VjkNFTContractProvider = ({ children }) => {
     let descriptionGenderNFT = chance.pickone(["He", "She"]);
     let descriptionAnimalNFT = chance.animal();
 
-    let descriptionNFT = `This work of art is made by ${descriptionNameNFT} from ${descriptionCountryNFT} in ${descriptionYearNFT}. ${descriptionGenderNFT} told us that this peace was expired in a ${descriptionAnimalNFT}.`;
+    let descriptionNFT = `This work of art is made by ${descriptionNameNFT} from ${descriptionCountryNFT} in ${descriptionYearNFT}. ${descriptionGenderNFT} told us that this peace was inspired by ${descriptionAnimalNFT}.`;
 
     return descriptionNFT;
+  };
+
+  const formatTokenURI = () => {
+    const nameNFT = chanceNameNFT();
+    const descriptionNFT = chanceDescriptionNFT();
+    const svg = chanceSvg();
+    const uriBase = {
+      Name: `${nameNFT}`,
+      Description: `${descriptionNFT}`,
+      Painting: `${svg}`,
+    };
+    const uriBase64 = Buffer.from(JSON.stringify(uriBase)).toString("base64");
+
+    return uriBase64;
   };
 
   const checkIfWalletisConnected = async () => {
@@ -136,9 +150,7 @@ export const VjkNFTContractProvider = ({ children }) => {
         (vjkNFTContract) => ({
           addressSender: vjkNFTContract.sender,
           tokenId: vjkNFTContract.tokenId,
-          nameNFT: vjkNFTContract.nameNFT,
-          descriptionNFT: vjkNFTContract.descriptionNFT,
-          vjkNFT: vjkNFTContract.svg,
+          uri: vjkNFTContract.uri,
         })
       );
       setCollections(structuredCollections);
@@ -165,17 +177,11 @@ export const VjkNFTContractProvider = ({ children }) => {
     try {
       if (!ethereum) return alert("Please install metamask");
       setIsLoading(true);
-      let nameNFT = chanceNameNFT();
-      let descriptionNFT = chanceDescriptionNFT();
-      let svg = chanceSvg();
 
       const vjkNFTContract = getvjkNFTContract();
+      const uri = formatTokenURI();
 
-      const create_tx = await vjkNFTContract.safeMint(
-        `${nameNFT}`,
-        `${descriptionNFT}`,
-        `${svg}`
-      );
+      const create_tx = await vjkNFTContract.safeMint(uri);
       console.log(`Loading - ${create_tx.hash}`);
       await create_tx.wait(1);
 

@@ -4,15 +4,16 @@ import { ContractContext } from "../context/ContractContext";
 import { Box, Grid, Paper, Typography, Link, CardMedia } from "@mui/material";
 import { shortenAddress } from "../utils/shortenAddress";
 import { contractAddress } from "../utils/constants";
-import { FaEthereum } from "react-icons/fa";
+import { Buffer } from "buffer";
 
-const CollectionCard = ({
-  addressSender,
-  tokenId,
-  nameNFT,
-  descriptionNFT,
-  vjkNFT,
-}) => {
+const CollectionCard = ({ addressSender, tokenId, uri }) => {
+  const decodeBase64Uri = JSON.parse(
+    Buffer.from(uri, "base64").toString("utf-8")
+  );
+  const nameNFT = decodeBase64Uri.Name;
+  const descriptionNFT = decodeBase64Uri.Description;
+  const vjkNFT = decodeBase64Uri.Painting;
+
   const linkTokenId = `/${tokenId}`;
 
   return (
