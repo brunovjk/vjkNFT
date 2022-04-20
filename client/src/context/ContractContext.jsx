@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { contractABI, contractAddress } from "../utils/constants";
-import { Base64 } from "js-base64";
 import { Buffer } from "buffer";
 
 export const ContractContext = React.createContext();
@@ -80,10 +79,8 @@ export const VjkNFTContractProvider = ({ children }) => {
 
   const chanceSvg = () => {
     let chanceSvg = `${chance.svg({})}`;
+    let svg = Buffer.from(chanceSvg).toString("base64");
 
-    let chanceSvgBase64Encoded = Base64.encode(chanceSvg);
-    let baseURL = "data:image/svg+xml;base64,";
-    let svg = baseURL + chanceSvgBase64Encoded;
     return svg;
   };
 
@@ -144,16 +141,23 @@ export const VjkNFTContractProvider = ({ children }) => {
       if (!ethereum) return alert("Please install metamask");
 
       const vjkNFTContract = getvjkNFTContract();
-      const availableCollections = await vjkNFTContract.getAllCollections();
 
-      const structuredCollections = availableCollections.map(
-        (vjkNFTContract) => ({
-          addressSender: vjkNFTContract.sender,
-          tokenId: vjkNFTContract.tokenId,
-          uri: vjkNFTContract.uri,
-        })
-      );
-      setCollections(structuredCollections);
+      console.log(`Total Supply: ${await vjkNFTContract.totalSupply}`);
+      // const totalSupply = await vjkNFTContract.totalSupply;
+      // const tokenId = totalSupply - 1;
+      console.log(`Address Sender: ${await vjkNFTContract.ownerOf(0)}`);
+      console.log(`Data: ${await vjkNFTContract.tokenURI(0)}`);
+
+      // const availableCollections = await vjkNFTContract.getAllCollections();
+
+      // const structuredCollections = availableCollections.map(
+      //   (vjkNFTContract) => ({
+      //     addressSender: vjkNFTContract.sender,
+      //     tokenId: vjkNFTContract.tokenId,
+      //     uri: vjkNFTContract.uri,
+      //   })
+      // );
+      // setCollections(structuredCollections);
     } catch (error) {
       console.log(error);
     }

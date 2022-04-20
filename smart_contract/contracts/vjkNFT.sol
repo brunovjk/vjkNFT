@@ -13,20 +13,13 @@ contract vjkNFT is ERC721, ERC721URIStorage, Pausable, Ownable {
     Counters.Counter private _tokenIdCounter;
 
     uint256 public mintPrice = 0 ether;
+    uint256 public totalSupply;
     uint256 public maxSupply;
     mapping(address => uint) public mintedWallets;
-
-    struct CollectionStruct {
-        address sender;
-        string tokenId;
-        string uri;
-    }
 
     constructor() payable ERC721("vjkNFT", "VJK") {
         maxSupply = 10000;
     }
-
-    CollectionStruct[] collections;
 
     function setMaxSupply(uint256 _maxSupply) external onlyOwner{
         maxSupply = _maxSupply;
@@ -43,6 +36,7 @@ contract vjkNFT is ERC721, ERC721URIStorage, Pausable, Ownable {
         require(msg.value == mintPrice, "wrong value");
         require(maxSupply > tokenId, "sold out");
 
+        totalSupply++;
         mintedWallets[msg.sender]++;
         _tokenIdCounter.increment();
 
@@ -50,12 +44,6 @@ contract vjkNFT is ERC721, ERC721URIStorage, Pausable, Ownable {
         string memory baseURI = _baseURI();
         string memory _TokenURI = string(abi.encodePacked(baseURI, uri));
         _setTokenURI(tokenId, _TokenURI);
-
-        collections.push(CollectionStruct(msg.sender, Strings.toString(tokenId), uri));
-    }
-
-    function getAllCollections() external view returns (CollectionStruct[] memory) {
-        return collections;
     }
 
     function pause() public onlyOwner {
