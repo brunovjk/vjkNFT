@@ -13,10 +13,11 @@ import {
 import { shortenAddress } from "../utils/shortenAddress";
 import { contractAddress } from "../utils/constants";
 import { useLocation } from "react-router-dom";
+import { FaEthereum } from "react-icons/fa";
 
 export default function NFTCard() {
-  const { addressSender } = useLocation().state.addressSender;
-  const { tokenId } = useLocation().state.tokenId;
+  const { addresssender } = useLocation().state.addresssender;
+  const { tokenid } = useLocation().state.tokenid;
   const { nameNFT } = useLocation().state.nameNFT;
   const { descriptionNFT } = useLocation().state.descriptionNFT;
   const { vjkNFT } = useLocation().state.vjkNFT;
@@ -80,7 +81,7 @@ export default function NFTCard() {
                     rel="noopener noreferrer"
                   >
                     <Typography color="secondary" variant="body1">
-                      Owner: {shortenAddress(addressSender)}
+                      Owner: {shortenAddress(addresssender)}
                     </Typography>
                   </Link>
                 </Grid>
@@ -92,6 +93,11 @@ export default function NFTCard() {
                 <Grid item>
                   <Typography color="secondary" variant="body1">
                     {descriptionNFT}
+                  </Typography>
+                </Grid>
+                <Grid item mt={2}>
+                  <Typography color="secondary" variant="h4">
+                    <FaEthereum size={28} /> 0.05
                   </Typography>
                 </Grid>
                 <Grid item mt={2}>
@@ -151,7 +157,7 @@ export default function NFTCard() {
                           </Grid>
                           <Grid item>
                             <Typography color="secondary" variant="body2">
-                              {tokenId}
+                              {tokenid}
                             </Typography>
                           </Grid>
                         </Grid>

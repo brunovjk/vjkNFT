@@ -5,16 +5,18 @@ import { Box, Grid, Paper, Typography, Link, CardMedia } from "@mui/material";
 import { shortenAddress } from "../utils/shortenAddress";
 import { contractAddress } from "../utils/constants";
 import { Buffer } from "buffer";
+import { FaEthereum } from "react-icons/fa";
 
-const CollectionCard = ({ addressSender, tokenId, uri }) => {
+const CollectionCard = ({ tokenid, addresssender, uri }) => {
+  const splitedURI = uri.split("data:application/json;base64,")[1];
   const decodeBase64Uri = JSON.parse(
-    Buffer.from(uri, "base64").toString("utf-8")
+    Buffer.from(splitedURI, "base64").toString("utf-8")
   );
   const nameNFT = decodeBase64Uri.Name;
   const descriptionNFT = decodeBase64Uri.Description;
   const vjkNFT = decodeBase64Uri.Painting;
 
-  const linkTokenId = `/${tokenId}`;
+  const linkTokenId = `/${tokenid}`;
 
   return (
     <Box
@@ -44,8 +46,8 @@ const CollectionCard = ({ addressSender, tokenId, uri }) => {
             <NavLink
               to={linkTokenId}
               state={{
-                addressSender: { addressSender },
-                tokenId: { tokenId },
+                addresssender: { addresssender },
+                tokenid: { tokenid },
                 nameNFT: { nameNFT },
                 descriptionNFT: { descriptionNFT },
                 vjkNFT: { vjkNFT },
@@ -67,14 +69,14 @@ const CollectionCard = ({ addressSender, tokenId, uri }) => {
           </Grid>
           <Grid item>
             <Link
-              href={`https://ropsten.etherscan.io/token/${contractAddress}`}
+              href={`https://ropsten.etherscan.io/address/${addresssender}`}
               underline="none"
               color="secondary"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Typography color="secondary" variant="subtitle2">
-                Token ID: {tokenId}
+              <Typography color="secondary" variant="body2">
+                Owner: {shortenAddress(addresssender)}
               </Typography>
             </Link>
           </Grid>
@@ -85,17 +87,31 @@ const CollectionCard = ({ addressSender, tokenId, uri }) => {
             }}
             my={1}
           >
-            <Link
-              href={`https://ropsten.etherscan.io/address/${addressSender}`}
-              underline="none"
-              color="secondary"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              <Typography color="secondary" variant="body2">
-                Owner: {shortenAddress(addressSender)}
-              </Typography>
-            </Link>
+              <Grid item>
+                <Link
+                  href={`https://ropsten.etherscan.io/token/${contractAddress}`}
+                  underline="none"
+                  color="secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Typography color="secondary" variant="subtitle2">
+                    Token ID: {tokenid}
+                  </Typography>
+                </Link>
+              </Grid>
+              <Grid item mr={1}>
+                <Typography color="secondary" variant="subtitle1">
+                  <FaEthereum size={14} /> 0.05
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Paper>

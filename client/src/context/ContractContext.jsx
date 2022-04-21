@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { contractABI, contractAddress } from "../utils/constants";
 import { Buffer } from "buffer";
+import BigNumber from "bignumber.js";
 
 export const ContractContext = React.createContext();
 const { ethereum } = window;
 const getvjkNFTContract = () => {
   const provider = new ethers.providers.Web3Provider(ethereum);
   const signer = provider.getSigner(0);
+
   const vjkNFTContract = new ethers.Contract(
     contractAddress,
     contractABI,
@@ -79,7 +81,9 @@ export const VjkNFTContractProvider = ({ children }) => {
 
   const chanceSvg = () => {
     let chanceSvg = `${chance.svg({})}`;
-    let svg = Buffer.from(chanceSvg).toString("base64");
+    let svgBase64 = "data:image/svg+xml;base64,";
+    let svgEncoded64 = Buffer.from(chanceSvg).toString("base64");
+    let svg = svgBase64 + svgEncoded64;
 
     return svg;
   };
@@ -139,25 +143,21 @@ export const VjkNFTContractProvider = ({ children }) => {
   const getAllCollections = async () => {
     try {
       if (!ethereum) return alert("Please install metamask");
-
       const vjkNFTContract = getvjkNFTContract();
+      const totalSupplyBigNumber = await vjkNFTContract.totalSupply();
+      const totalSupply = BigNumber(totalSupplyBigNumber._hex).c[0];
 
-      console.log(`Total Supply: ${await vjkNFTContract.totalSupply}`);
-      // const totalSupply = await vjkNFTContract.totalSupply;
-      // const tokenId = totalSupply - 1;
-      console.log(`Address Sender: ${await vjkNFTContract.ownerOf(0)}`);
-      console.log(`Data: ${await vjkNFTContract.tokenURI(0)}`);
+      const collection = [];
 
-      // const availableCollections = await vjkNFTContract.getAllCollections();
-
-      // const structuredCollections = availableCollections.map(
-      //   (vjkNFTContract) => ({
-      //     addressSender: vjkNFTContract.sender,
-      //     tokenId: vjkNFTContract.tokenId,
-      //     uri: vjkNFTContract.uri,
-      //   })
-      // );
-      // setCollections(structuredCollections);
+      for (var i = 0; i < totalSupply; i++) {
+        collection[i] = {
+          tokenid: i,
+          addresssender: await vjkNFTContract.ownerOf(i),
+          uri: await vjkNFTContract.tokenURI(i),
+        };
+      }
+      // console.log(collection);
+      setCollections(collection);
     } catch (error) {
       console.log(error);
     }
@@ -183,9 +183,11 @@ export const VjkNFTContractProvider = ({ children }) => {
       setIsLoading(true);
 
       const vjkNFTContract = getvjkNFTContract();
-      const uri = formatTokenURI();
 
-      const create_tx = await vjkNFTContract.safeMint(uri);
+      const uri = formatTokenURI();
+      const create_tx = await vjkNFTContract.safeMint(uri, {
+        value: ethers.utils.parseEther("0.05"),
+      });
       console.log(`Loading - ${create_tx.hash}`);
       await create_tx.wait(1);
 
