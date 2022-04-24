@@ -13,7 +13,7 @@ contract vjkNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-    uint256 public mintPrice = 0.05 ether;
+    uint256 public mintPrice = 100 ether;
     uint256 public maxSupply = 9999;
     mapping(address => uint) public mintedWallets;
 

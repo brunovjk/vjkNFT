@@ -13,9 +13,7 @@ function Home() {
         sx={{
           height: "250px",
         }}
-      >
-        {/* <Services /> */}
-      </Box>
+      ></Box>
       <Box component="div" className="gradient-bg-transactions">
         <Transactions />
       </Box>

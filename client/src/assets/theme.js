@@ -37,15 +37,16 @@ export const theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
+          height: "40px",
           color: "#fff",
-          borderRadius: "8px",
+          borderRadius: "16px",
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: "8px",
+          borderRadius: "16px",
         },
       },
     },
@@ -53,7 +54,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           color: "rgb(255,255,255,0.3)",
+          fontSize: "12px",
+          lineHeight: "12px",
           fontWeight: "300",
+          verticalAlign: "middle",
         },
       },
     },

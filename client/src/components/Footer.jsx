@@ -54,6 +54,13 @@ const Footer = () => {
                 </NavLink>
               </Grid>
               <Grid item>
+                <NavLink to="/interactions" style={{ textDecoration: "none" }}>
+                  <Typography color="secondary" variant="subtitle2">
+                    Interactions
+                  </Typography>
+                </NavLink>
+              </Grid>
+              <Grid item>
                 <NavLink to="/tutorials" style={{ textDecoration: "none" }}>
                   <Typography color="secondary" variant="subtitle2">
                     Tutorials

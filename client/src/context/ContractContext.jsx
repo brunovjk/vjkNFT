@@ -156,7 +156,6 @@ export const VjkNFTContractProvider = ({ children }) => {
           uri: await vjkNFTContract.tokenURI(i),
         };
       }
-      // console.log(collection);
       setCollections(collection);
     } catch (error) {
       console.log(error);
@@ -186,7 +185,7 @@ export const VjkNFTContractProvider = ({ children }) => {
 
       const uri = formatTokenURI();
       const create_tx = await vjkNFTContract.safeMint(uri, {
-        value: ethers.utils.parseEther("0.05"),
+        value: ethers.utils.parseEther("100"),
       });
       console.log(`Loading - ${create_tx.hash}`);
       await create_tx.wait(1);
