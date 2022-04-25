@@ -6,15 +6,15 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract vjkNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable, ERC721Burnable {
-    using Counters for Counters.Counter;
+/// @custom:security-contact brunovjk@brunovjk.com
+contract vjkNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
+    using Counters for Counters.Counter;    
     Counters.Counter private _tokenIdCounter;
 
-    uint256 public mintPrice = 100 ether;
-    uint256 public maxSupply = 9999;
+    uint256 public mintPrice = 0.05 ether;
+    uint256 public maxSupply = 99;
     mapping(address => uint) public mintedWallets;
 
     constructor() payable ERC721("vjkNFT", "VJK") { }
@@ -22,15 +22,15 @@ contract vjkNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable
     function pause() public onlyOwner {
         _pause();
     }
-
     function unpause() public onlyOwner {
         _unpause();
     }
-
+        function setMintPrice(uint256 _mintPrice) external onlyOwner{
+        mintPrice = _mintPrice;
+    }
     function setMaxSupply(uint256 _maxSupply) external onlyOwner{
         maxSupply = _maxSupply;
     }
-
     function withdraw() public payable onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
@@ -38,7 +38,7 @@ contract vjkNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable
     function safeMint(string memory uri) external payable {
         uint256 tokenId = _tokenIdCounter.current();
 
-        require(mintedWallets[msg.sender] < 10, "exceeds max per wallet");
+        require(mintedWallets[msg.sender] < 3, "exceeds max per wallet");
         require(msg.value == mintPrice, "wrong value");
         require(maxSupply > tokenId, "sold out");
 

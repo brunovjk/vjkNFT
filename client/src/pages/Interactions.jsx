@@ -20,6 +20,7 @@ import { contractABI, contractAddress } from "../utils/constants";
 import { shortenAddress } from "../utils/shortenAddress";
 import { ethers } from "ethers";
 import BigNumber from "bignumber.js";
+import { useAlert } from "react-alert";
 
 const { ethereum } = window;
 const getvjkNFTContract = () => {
@@ -40,40 +41,43 @@ export default function Interactions() {
   const [contractOwner, setContractOwner] = useState("");
   const [contractMintPrice, setContractMintPrice] = useState("");
   const [contractTotalSupply, setContractTotalSupply] = useState("");
-  const [tokenIdBurn, setTokenIdBurn] = useState("");
+  // const [tokenIdBurn, setTokenIdBurn] = useState("");
   const [tokenIdOwnerOf, setTokenIdOwnerOf] = useState("");
   const [ownerOf, setOwnerOf] = useState("");
   const [tokenURI, setTokenURI] = useState("");
-  const [withdrawSuccess, setWithdrawSuccess] = useState(false);
-  const [BurnedSuccess, setBurnedSuccess] = useState(false);
+  // const [withdrawSuccess, setWithdrawSuccess] = useState(false);
+  // const [BurnedSuccess, setBurnedSuccess] = useState(false);
   const [addressMintedWallets, setAddressMintedWallets] = useState("");
   const [addressBalanceOf, setAddressBalanceOf] = useState("");
-  const [indexTokenIdByIndex, setIndexTokenIdByIndex] = useState("");
-  const [indexTokenOwnerByIndex, setIndexTokenOwnerByIndex] = useState("");
-  const [addressTokenOwnerByIndex, setAddressTokenOwnerByIndex] = useState("");
+  // const [indexTokenIdByIndex, setIndexTokenIdByIndex] = useState("");
+  // const [indexTokenOwnerByIndex, setIndexTokenOwnerByIndex] = useState("");
+  // const [addressTokenOwnerByIndex, setAddressTokenOwnerByIndex] = useState("");
   const [mintedWallets, setMintedWallets] = useState("");
   const [balanceOf, setBalanceOf] = useState("");
-  const [tokenIdByIndex, setTokenIdByIndex] = useState("");
-  const [tokenOwnerByIndex, setTokenOwnerByIndex] = useState("");
+  // const [tokenIdByIndex, setTokenIdByIndex] = useState("");
+  // const [tokenOwnerByIndex, setTokenOwnerByIndex] = useState("");
+  const alert = useAlert();
 
   const [tokenIdtokenURI, setTokenIdtokenURI] = useState("");
 
   const { currentAccount, isLoading, connectWallet, createVjkNFT } =
     useContext(ContractContext);
 
-  const getWithdraw = async () => {
-    setWithdrawSuccess(false);
-    try {
-      const vjkNFTContract = getvjkNFTContract();
-      const withdraw_tx = await vjkNFTContract.withdraw();
-      await withdraw_tx.wait(1);
+  // const getWithdraw = async () => {
+  //   setWithdrawSuccess(false);
+  //   try {
+  //     const vjkNFTContract = getvjkNFTContract();
+  //     const withdraw_tx = await vjkNFTContract.withdraw();
+  //     await withdraw_tx.wait(1);
 
-      setWithdrawSuccess(true);
-    } catch (error) {
-      console.log(error);
-      throw new Error("No ethereum object.");
-    }
-  };
+  //     setWithdrawSuccess(true);
+  //   } catch (error) {
+  //     console.log(error);
+
+  //     alert.error("You are connect with a Not Owner Account.");
+  //     throw new Error("You are connect with a Not Owner Account.");
+  //   }
+  // };
   const getContractName = async () => {
     try {
       const vjkNFTContract = getvjkNFTContract();
@@ -81,7 +85,8 @@ export default function Interactions() {
       setContractName(name_tx);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("There's no valid Contract");
+      throw new Error("There's no valid Contract");
     }
   };
   const getContractSymbol = async () => {
@@ -91,7 +96,8 @@ export default function Interactions() {
       setContractSymbol(symbol_tx);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("There's no valid Contract");
+      throw new Error("There's no valid Contract");
     }
   };
   const getContractOwner = async () => {
@@ -101,7 +107,8 @@ export default function Interactions() {
       setContractOwner(owner_tx);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("There's no valid Contract");
+      throw new Error("There's no valid Contract");
     }
   };
   const getContractMintPrice = async () => {
@@ -113,7 +120,8 @@ export default function Interactions() {
       setContractMintPrice(mintprice_tx);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("There's no valid Contract");
+      throw new Error("There's no valid Contract");
     }
   };
   const getContractTotalSupply = async () => {
@@ -124,21 +132,22 @@ export default function Interactions() {
       setContractTotalSupply(totalSupply);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("There's no valid Contract");
+      throw new Error("There's no valid Contract");
     }
   };
-  const getBurn = async () => {
-    setBurnedSuccess(false);
-    try {
-      const vjkNFTContract = getvjkNFTContract();
-      const burn_tx = await vjkNFTContract.burn(tokenIdBurn);
-      await burn_tx.wait(1);
-      setBurnedSuccess(true);
-    } catch (error) {
-      console.log(error);
-      throw new Error("No ethereum object.");
-    }
-  };
+  // const getBurn = async () => {
+  //   setBurnedSuccess(false);
+  //   try {
+  //     const vjkNFTContract = getvjkNFTContract();
+  //     const burn_tx = await vjkNFTContract.burn(tokenIdBurn);
+  //     await burn_tx.wait(1);
+  //     setBurnedSuccess(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error("No ethereum object.");
+  //   }
+  // };
   const getOwnerOf = async () => {
     try {
       const vjkNFTContract = getvjkNFTContract();
@@ -146,7 +155,8 @@ export default function Interactions() {
       setOwnerOf(ownerOf_tx);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("You need a valid TokenID to query the Owner");
+      throw new Error("You need a valid TokenID to query the Owner");
     }
   };
   const getTokenURI = async () => {
@@ -156,7 +166,8 @@ export default function Interactions() {
       setTokenURI(tokenURI_tx);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("You need a valid TokenID to query the TokenURI");
+      throw new Error("You need a valid TokenID to query the TokenURI");
     }
   };
   const getMintedWallets = async () => {
@@ -170,7 +181,8 @@ export default function Interactions() {
       setMintedWallets(`${mintedWallets_tx}`);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("You need a valid Address to query the Minted Wallets");
+      throw new Error("You need a valid Address to query the Minted Wallets");
     }
   };
   const getBalanceOf = async () => {
@@ -185,40 +197,41 @@ export default function Interactions() {
       setBalanceOf(`${balanceOf_tx}`);
     } catch (error) {
       console.log(error);
-      throw new Error("No ethereum object.");
+      alert.error("You need a valid Address to query the Balance Of");
+      throw new Error("You need a valid Address to query the Balance Of");
     }
   };
-  const getTokenIdByIndex = async () => {
-    try {
-      const vjkNFTContract = getvjkNFTContract();
-      const tokenIdByIndexBigNumber = await vjkNFTContract.tokenByIndex(
-        indexTokenIdByIndex
-      );
+  // const getTokenIdByIndex = async () => {
+  //   try {
+  //     const vjkNFTContract = getvjkNFTContract();
+  //     const tokenIdByIndexBigNumber = await vjkNFTContract.tokenByIndex(
+  //       indexTokenIdByIndex
+  //     );
 
-      const tokenIdByIndex_tx = BigNumber(tokenIdByIndexBigNumber._hex).c[0];
+  //     const tokenIdByIndex_tx = BigNumber(tokenIdByIndexBigNumber._hex).c[0];
 
-      setTokenIdByIndex(tokenIdByIndex_tx);
-    } catch (error) {
-      console.log(error);
-      throw new Error("No ethereum object.");
-    }
-  };
-  const getTokenOwnerByIndex = async () => {
-    try {
-      const vjkNFTContract = getvjkNFTContract();
-      const tokenOwnerByIndex = await vjkNFTContract.tokenOfOwnerByIndex(
-        addressTokenOwnerByIndex,
-        indexTokenOwnerByIndex
-      );
+  //     setTokenIdByIndex(tokenIdByIndex_tx);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error("No ethereum object.");
+  //   }
+  // };
+  // const getTokenOwnerByIndex = async () => {
+  //   try {
+  //     const vjkNFTContract = getvjkNFTContract();
+  //     const tokenOwnerByIndex = await vjkNFTContract.tokenOfOwnerByIndex(
+  //       addressTokenOwnerByIndex,
+  //       indexTokenOwnerByIndex
+  //     );
 
-      const tokenOwnerByIndex_tx = BigNumber(tokenOwnerByIndex._hex).c[0];
+  //     const tokenOwnerByIndex_tx = BigNumber(tokenOwnerByIndex._hex).c[0];
 
-      setTokenOwnerByIndex(tokenOwnerByIndex_tx);
-    } catch (error) {
-      console.log(error);
-      throw new Error("No ethereum object.");
-    }
-  };
+  //     setTokenOwnerByIndex(tokenOwnerByIndex_tx);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error("No ethereum object.");
+  //   }
+  // };
 
   return (
     <Box component="div" className="gradient-bg-welcome">
@@ -492,7 +505,7 @@ export default function Interactions() {
                     spacing={2}
                     p={2}
                   >
-                    <Grid
+                    {/* <Grid
                       item
                       sx={{
                         width: "100%",
@@ -521,7 +534,7 @@ export default function Interactions() {
                           )}
                         </Grid>
                       </Grid>
-                    </Grid>
+                    </Grid> */}
                     <Grid
                       item
                       sx={{
@@ -685,14 +698,22 @@ export default function Interactions() {
                             variant="outlined"
                             fullWidth={true}
                           >
-                            safeMint
+                            _Mint
                           </Button>
                         </Grid>
-                        <Grid item xs={4}></Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sx={{
+                            height: "72px",
+                          }}
+                        >
+                          {!isLoading ? <></> : <Loader />}
+                        </Grid>
                         <Grid item xs={4}></Grid>
                       </Grid>
                     </Grid>
-                    <Grid
+                    {/* <Grid
                       item
                       sx={{
                         width: "100%",
@@ -729,45 +750,7 @@ export default function Interactions() {
                           )}
                         </Grid>
                       </Grid>
-                    </Grid>
-                    <Grid
-                      item
-                      sx={{
-                        width: "100%",
-                      }}
-                    >
-                      <Grid
-                        container
-                        direction={{ xs: "column", sm: "row" }}
-                        justifyContent="flex-start"
-                        alignItems="center"
-                        spacing={2}
-                      >
-                        <Grid item xs={4}>
-                          <Button onClick={getMintedWallets} fullWidth={true}>
-                            MintedWallets
-                          </Button>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <TextField
-                            onChange={(e) =>
-                              setAddressMintedWallets(e.target.value)
-                            }
-                            color="secondary"
-                            label="address"
-                          ></TextField>
-                        </Grid>
-                        <Grid item xs={4}>
-                          {!mintedWallets ? (
-                            <Typography color="secondary"></Typography>
-                          ) : (
-                            <Typography color="secondary">
-                              {mintedWallets}
-                            </Typography>
-                          )}
-                        </Grid>
-                      </Grid>
-                    </Grid>
+                    </Grid> */}
                     <Grid
                       item
                       sx={{
@@ -892,6 +875,44 @@ export default function Interactions() {
                         spacing={2}
                       >
                         <Grid item xs={4}>
+                          <Button onClick={getMintedWallets} fullWidth={true}>
+                            MintedWallets
+                          </Button>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <TextField
+                            onChange={(e) =>
+                              setAddressMintedWallets(e.target.value)
+                            }
+                            color="secondary"
+                            label="address"
+                          ></TextField>
+                        </Grid>
+                        <Grid item xs={4}>
+                          {!mintedWallets ? (
+                            <Typography color="secondary"></Typography>
+                          ) : (
+                            <Typography color="secondary">
+                              {mintedWallets}
+                            </Typography>
+                          )}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    {/* <Grid
+                      item
+                      sx={{
+                        width: "100%",
+                      }}
+                    >
+                      <Grid
+                        container
+                        direction={{ xs: "column", sm: "row" }}
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        spacing={2}
+                      >
+                        <Grid item xs={4}>
                           <Button onClick={getTokenIdByIndex} fullWidth={true}>
                             TokenByIndex
                           </Button>
@@ -963,7 +984,7 @@ export default function Interactions() {
                           )}
                         </Grid>
                       </Grid>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 )}
               </Box>

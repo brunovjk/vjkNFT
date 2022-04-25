@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { contractABI, contractAddress } from "../utils/constants";
 import { Buffer } from "buffer";
 import BigNumber from "bignumber.js";
+import { useAlert } from "react-alert";
 
 export const ContractContext = React.createContext();
 const { ethereum } = window;
@@ -23,6 +24,7 @@ export const VjkNFTContractProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [collections, setCollections] = useState([]);
   const [refreshAfterMint, setRefreshAfterMint] = useState(false);
+  const alert = useAlert();
 
   let Chance = require("chance");
   let chance = new Chance();
@@ -124,7 +126,8 @@ export const VjkNFTContractProvider = ({ children }) => {
 
   const checkIfWalletisConnected = async () => {
     try {
-      if (!ethereum) return alert("Please install metamask");
+      if (!ethereum)
+        return alert.error("Please install a Cryptocurrency Software Wallet");
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
 
@@ -142,7 +145,8 @@ export const VjkNFTContractProvider = ({ children }) => {
   };
   const getAllCollections = async () => {
     try {
-      if (!ethereum) return alert("Please install metamask");
+      if (!ethereum)
+        return alert.error("Please install a Cryptocurrency Software Wallet");
       const vjkNFTContract = getvjkNFTContract();
       const totalSupplyBigNumber = await vjkNFTContract.totalSupply();
       const totalSupply = BigNumber(totalSupplyBigNumber._hex).c[0];
@@ -163,7 +167,8 @@ export const VjkNFTContractProvider = ({ children }) => {
   };
   const connectWallet = async () => {
     try {
-      if (!ethereum) return alert("Please install metamask");
+      if (!ethereum)
+        return alert.error("Please install a Cryptocurrency Software Wallet");
 
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
@@ -178,18 +183,20 @@ export const VjkNFTContractProvider = ({ children }) => {
   };
   const createVjkNFT = async () => {
     try {
-      if (!ethereum) return alert("Please install metamask");
+      if (!ethereum)
+        return alert.error("Please install a Cryptocurrency Software Wallet");
       setIsLoading(true);
 
       const vjkNFTContract = getvjkNFTContract();
 
       const uri = formatTokenURI();
       const create_tx = await vjkNFTContract.safeMint(uri, {
-        value: ethers.utils.parseEther("100"),
+        value: ethers.utils.parseEther("0.05"),
       });
       console.log(`Loading - ${create_tx.hash}`);
       await create_tx.wait(1);
 
+      alert.success("You have minted your NFT with Success");
       setIsLoading(false);
       setRefreshAfterMint(true);
     } catch (error) {
@@ -197,7 +204,12 @@ export const VjkNFTContractProvider = ({ children }) => {
 
       setIsLoading(false);
 
-      throw new Error("No ethereum object.");
+      alert.error(
+        "No able to mint. Check if you send the right Mint price or reach the Max token per Wallet"
+      );
+      throw new Error(
+        "No able to mint. Check if you send the right Mint price or reach the Max token per Wallet"
+      );
     }
   };
 
