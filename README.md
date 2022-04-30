@@ -1,2 +1,0 @@
-# vjkNFT
- vjkNFT NFT͟ Collection
