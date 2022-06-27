@@ -1,7 +1,7 @@
 const { BigNumber } = require("bignumber.js");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const mintPrice = "100";
+const mintPrice = "0.05";
 
 describe("vjkNFT", function () {
   it("Should return the new vjkNFT once it's minted", async function () {
@@ -28,49 +28,20 @@ describe("vjkNFT", function () {
     const vjknft = await vjkNFT.deploy();
     await vjknft.deployed();
 
-    const setvjkNFTTx = await vjknft.safeMint("<svg> String Test </svg>", {
+    const setvjkNFTTx = await vjknft.safeMint("<svg> String Test 1 </svg>", {
       value: ethers.utils.parseEther(mintPrice),
     });
     await setvjkNFTTx.wait();
-    const setvjkNFTTx1 = await vjknft.safeMint("<svg> String Test </svg>", {
+    const setvjkNFTTx1 = await vjknft.safeMint("<svg> String Test 2 </svg>", {
       value: ethers.utils.parseEther(mintPrice),
     });
     await setvjkNFTTx1.wait();
-    const setvjkNFTTx2 = await vjknft.safeMint("<svg> String Test </svg>", {
-      value: ethers.utils.parseEther(mintPrice),
-    });
-    await setvjkNFTTx2.wait();
-    const setvjkNFTTx3 = await vjknft.safeMint("<svg> String Test </svg>", {
-      value: ethers.utils.parseEther(mintPrice),
-    });
-    await setvjkNFTTx3.wait();
-
-    expect(await vjknft.totalSupply()).to.equal(4);
-  });
-  it("Total Supply Should decrease by 1 after burn token", async function () {
-    const vjkNFT = await ethers.getContractFactory("vjkNFT");
-    const vjknft = await vjkNFT.deploy();
-    await vjknft.deployed();
-
-    const setvjkNFTTx = await vjknft.safeMint("<svg> String Test </svg>", {
-      value: ethers.utils.parseEther(mintPrice),
-    });
-    await setvjkNFTTx.wait();
-
-    const setvjkNFTTx1 = await vjknft.safeMint("<svg> String Test </svg>", {
-      value: ethers.utils.parseEther(mintPrice),
-    });
-    await setvjkNFTTx1.wait();
-
-    const setvjkNFTTx2 = await vjknft.safeMint("<svg> String Test </svg>", {
+    const setvjkNFTTx2 = await vjknft.safeMint("<svg> String Test 3 </svg>", {
       value: ethers.utils.parseEther(mintPrice),
     });
     await setvjkNFTTx2.wait();
 
-    const burnvjkNFT = await vjknft.burn(1);
-    await burnvjkNFT.wait();
-
-    expect(await vjknft.totalSupply()).to.equal(2);
+    expect(await vjknft.totalSupply()).to.equal(3);
   });
   it("Contract Balance should be = 0 after withdraw()", async function () {
     const vjkNFT = await ethers.getContractFactory("vjkNFT");
@@ -79,24 +50,26 @@ describe("vjkNFT", function () {
 
     await vjknft.deployed();
 
-    const setvjkNFTTx = await vjknft.safeMint("<svg> String Test </svg>", {
+    const setvjkNFTTx = await vjknft.safeMint("<svg> String Test 1 </svg>", {
       value: ethers.utils.parseEther(mintPrice),
     });
     await setvjkNFTTx.wait();
 
-    const setvjkNFTTx1 = await vjknft.safeMint("<svg> String Test </svg>", {
+    const setvjkNFTTx1 = await vjknft.safeMint("<svg> String Test 2 </svg>", {
       value: ethers.utils.parseEther(mintPrice),
     });
     await setvjkNFTTx1.wait();
 
-    const setvjkNFTTx2 = await vjknft.safeMint("<svg> String Test </svg>", {
+    const setvjkNFTTx2 = await vjknft.safeMint("<svg> String Test 3 </svg>", {
       value: ethers.utils.parseEther(mintPrice),
     });
     await setvjkNFTTx2.wait();
 
     const balance = await provider.getBalance(vjknft.address);
 
-    // console.log(balance.toString());
+    console.log(`Collection balance: ${balance.toString()}.`);
+
+    expect(balance).to.equal(balance.toString()); //Should be 0.15 ETH
 
     const withdrawvjkNFT = await vjknft.withdraw();
     await withdrawvjkNFT.wait();
