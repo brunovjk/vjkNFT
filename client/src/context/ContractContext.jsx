@@ -80,7 +80,6 @@ export const VjkNFTContractProvider = ({ children }) => {
       return svg + "</svg>";
     },
   });
-
   const chanceSvg = () => {
     let chanceSvg = `${chance.svg({})}`;
     let svgBase64 = "data:image/svg+xml;base64,";
@@ -89,7 +88,6 @@ export const VjkNFTContractProvider = ({ children }) => {
 
     return svg;
   };
-
   const chanceNameNFT = () => {
     let nameNFTFisrt = chance.first();
     let nameNFTNumber = chance.natural({ min: 1000, max: 9999 });
@@ -97,7 +95,6 @@ export const VjkNFTContractProvider = ({ children }) => {
 
     return nameNFT;
   };
-
   const chanceDescriptionNFT = () => {
     let descriptionNameNFT = chance.name();
     let descriptionCountryNFT = chance.country({ full: true });
@@ -109,7 +106,6 @@ export const VjkNFTContractProvider = ({ children }) => {
 
     return descriptionNFT;
   };
-
   const formatTokenURI = () => {
     const nameNFT = chanceNameNFT();
     const descriptionNFT = chanceDescriptionNFT();
@@ -123,7 +119,6 @@ export const VjkNFTContractProvider = ({ children }) => {
 
     return uriBase64;
   };
-
   const checkIfWalletisConnected = async () => {
     try {
       if (!ethereum)
