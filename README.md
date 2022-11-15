@@ -1,6 +1,6 @@
 # VjkNFT
 
-<img src="https://iili.io/H9CHFLv.png" alt="VjkNFT dapp Hero section">
+<img src="https://i.ibb.co/n1vHbs1/Untitled.png" alt="VjkNFT dapp Hero section">
 
 > VjkNFT dApp Hero Section.
 
