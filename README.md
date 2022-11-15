@@ -1,12 +1,6 @@
 # VjkNFT
 
-![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/iuricode/README-template?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/iuricode/README-template?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/iuricode/README-template?style=for-the-badge)
-
-<img src="https://i.ibb.co/QXWDHb0/vjknft-dapp-hero-section.png" alt="VjkNFT dapp Hero section">
+<img src="https://iili.io/H9CHFLv.png" alt="VjkNFT dapp Hero section">
 
 > VjkNFT dApp Hero Section.
 
@@ -36,7 +30,7 @@ You can also clone this repository, change contracts in `smart_contracts` folder
 
 You can use our `client` application and interact with contracts already deployed on Goerli testnet.
 
-## Process
+## 📇 Process
 
 Our application consists of a button to create a new NFT and a section to show all the NFT created in this collection.
 However, several steps are followed automatically during creation:
@@ -55,7 +49,7 @@ However, several steps are followed automatically during creation:
 
 Our dapp will guide you through the whole process.
 
-### Adjustments and improvements
+### 🎚️ Adjustments and improvements
 
 The project is still under development and the next updates will focus on the following tasks:
 
@@ -71,8 +65,6 @@ To contribute to VjkNFT, follow these steps:
 3. Make your changes and commit them: `git commit -m '<message_commit>'`
 4. Push to the original branch: `git push origin VjkNFT / <local>`
 5. Create the pull request.
-
-Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
 Alternatively, see the GitHub documentation at [how to create a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
