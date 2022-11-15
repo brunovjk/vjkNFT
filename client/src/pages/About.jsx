@@ -10,12 +10,9 @@ import {
   Fab,
   Zoom,
   useScrollTrigger,
-  List,
-  ListItem,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ContractContext } from "../context/ContractContext";
-import { contractAddress } from "../utils/constants";
 
 function ScrollTop(props) {
   const { children } = props;

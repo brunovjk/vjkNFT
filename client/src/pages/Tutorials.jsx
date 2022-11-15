@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ContractContext } from "../context/ContractContext";
-import { contractAddress } from "../utils/constants";
+import { VjkNFT_address } from "../utils/constants";
 
 function ScrollTop(props) {
   const { children } = props;
@@ -91,11 +91,11 @@ export default function Tutorials(props) {
                   </Grid>
                   <Grid item>
                     <Link
-                      href="#RopstenTestnet"
+                      href="#GoerliTestnet"
                       style={{ textDecoration: "none" }}
                     >
                       <Typography variant="subtitle2" color="black">
-                        Ropsten Testnet
+                        Goerli Testnet
                       </Typography>
                     </Link>
                   </Grid>
@@ -212,19 +212,18 @@ export default function Tutorials(props) {
                 </Typography>
               </Link>
               <Divider />
-              <Typography variant="h3" id="RopstenTestnet" my={6}>
-                Ropsten Testnet
+              <Typography variant="h3" id="GoerliTestnet" my={6}>
+                Goerli Testnet
               </Typography>
               <Typography variant="body1" mb={4}>
-                We deployed this project at Ropsten Ethereum, also known as
+                We deployed this project at Goerli Ethereum, also known as
                 “Ethereum Testnet”, are as the name implies, a testing network
                 that runs the same protocol as Ethereum does and is used to
                 testing purposes before deploying on the main network (Mainnet).
               </Typography>
               <Typography variant="body1" mb={2}>
                 A faucet is where you can acquire free [testnet] ETH to use in
-                our application. Below are some faucet links to get Ropsten
-                ETHs:
+                our application. Below are some faucet links to get Goerli ETHs:
               </Typography>
               <Link
                 target="_blank"
@@ -338,7 +337,7 @@ export default function Tutorials(props) {
                     enter the token address in the first field.
                   </ListItem>
                   <ListItem>
-                    3 - All NFTs use the same contract: {`${contractAddress}`},
+                    3 - All NFTs use the same contract: {`${VjkNFT_address}`},
                     Use 0 as Decimal Token
                   </ListItem>
                   <ListItem>

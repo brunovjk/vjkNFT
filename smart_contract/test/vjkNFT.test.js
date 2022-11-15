@@ -56,135 +56,135 @@ describe("vjkNFT", async function () {
     vjkContract = vjknft;
     console.log("vjkNFT Contract Address:", vjkContract.address);
   });
-  // it("Should provide a caller with more LINK than they started with after a swap", async function () {
-  //   /* Deploy the GeneralSwap contract */
-  //   const generalSwapFactory = await ethers.getContractFactory("GeneralSwap");
-  //   const generalSwap = await generalSwapFactory.deploy(SwapRouterAddress);
-  //   await generalSwap.deployed();
+  it("Should provide a caller with more LINK than they started with after a swap", async function () {
+    /* Deploy the GeneralSwap contract */
+    const generalSwapFactory = await ethers.getContractFactory("GeneralSwap");
+    const generalSwap = await generalSwapFactory.deploy(SwapRouterAddress);
+    await generalSwap.deployed();
 
-  //   console.log(`GeneralSwap deployed at: ${generalSwap.address}`);
+    console.log(`GeneralSwap deployed at: ${generalSwap.address}`);
 
-  //   /* Connect to weth9 and wrap some eth  */
-  //   const balanceOfBeforeDeposit = await WETH.balanceOf(accounts[0].address);
+    /* Connect to weth9 and wrap some eth  */
+    const balanceOfBeforeDeposit = await WETH.balanceOf(accounts[0].address);
 
-  //   const deposit = await WETH.deposit({
-  //     value: valueToWrap,
-  //   });
-  //   await deposit.wait(1);
-  //   const balanceOfAfterDeposit = await WETH.balanceOf(accounts[0].address);
+    const deposit = await WETH.deposit({
+      value: valueToWrap,
+    });
+    await deposit.wait(1);
+    const balanceOfAfterDeposit = await WETH.balanceOf(accounts[0].address);
 
-  //   console.log(
-  //     `Wrapped: ${ethers.utils.formatEther(
-  //       valueToWrap
-  //     )} ETH, Balance: ${ethers.utils.formatEther(balanceOfAfterDeposit)} WETH`
-  //   );
+    console.log(
+      `Wrapped: ${ethers.utils.formatEther(
+        valueToWrap
+      )} ETH, Balance: ${ethers.utils.formatEther(balanceOfAfterDeposit)} WETH`
+    );
 
-  //   expect(
-  //     parseInt(ethers.utils.formatEther(balanceOfBeforeDeposit)) +
-  //       parseInt(ethers.utils.formatEther(valueToWrap))
-  //   ).to.equal(parseInt(ethers.utils.formatEther(balanceOfAfterDeposit)));
+    expect(
+      parseInt(ethers.utils.formatEther(balanceOfBeforeDeposit)) +
+        parseInt(ethers.utils.formatEther(valueToWrap))
+    ).to.equal(parseInt(ethers.utils.formatEther(balanceOfAfterDeposit)));
 
-  //   /* Check Initial LINK Balance */
-  //   const expandedInitialLINKBalance = await LINK.balanceOf(
-  //     accounts[0].address
-  //   );
-  //   const InitialLINKBalance = Number(
-  //     ethers.utils.formatUnits(expandedInitialLINKBalance, DECIMALS)
-  //   );
+    /* Check Initial LINK Balance */
+    const expandedInitialLINKBalance = await LINK.balanceOf(
+      accounts[0].address
+    );
+    const InitialLINKBalance = Number(
+      ethers.utils.formatUnits(expandedInitialLINKBalance, DECIMALS)
+    );
 
-  //   console.log(`Initial LINK Balance: ${InitialLINKBalance}`);
+    console.log(`Initial LINK Balance: ${InitialLINKBalance}`);
 
-  //   /* Approve the swapper contract to spend weth9 for me */
-  //   const approveWETH = await WETH.approve(generalSwap.address, amountIn);
-  //   await approveWETH.wait(1);
+    /* Approve the swapper contract to spend weth9 for me */
+    const approveWETH = await WETH.approve(generalSwap.address, amountIn);
+    await approveWETH.wait(1);
 
-  //   /* Execute the swap WETH to LINK */
-  //   const swapWETHtoLINK = await generalSwap.swapExactInputSingle(
-  //     amountIn,
-  //     WETH_ADDRESS,
-  //     LINK_ADDRESS,
-  //     {
-  //       gasLimit: 300000,
-  //     }
-  //   );
-  //   swapWETHtoLINK.wait(1);
-  //   console.log(`Swapped ${ethers.utils.formatEther(amountIn)} WETH to LINK`);
+    /* Execute the swap WETH to LINK */
+    const swapWETHtoLINK = await generalSwap.swapExactInputSingle(
+      amountIn,
+      WETH_ADDRESS,
+      LINK_ADDRESS,
+      {
+        gasLimit: 300000,
+      }
+    );
+    swapWETHtoLINK.wait(1);
+    console.log(`Swapped ${ethers.utils.formatEther(amountIn)} WETH to LINK`);
 
-  //   /* Check LINK Balance After WETH to LINK */
-  //   const expandedLINKBalanceAfterWETHtoLINK = await LINK.balanceOf(
-  //     accounts[0].address
-  //   );
-  //   const LINKBalanceAfterWETHtoLINK = Number(
-  //     ethers.utils.formatUnits(expandedLINKBalanceAfterWETHtoLINK, DECIMALS)
-  //   );
+    /* Check LINK Balance After WETH to LINK */
+    const expandedLINKBalanceAfterWETHtoLINK = await LINK.balanceOf(
+      accounts[0].address
+    );
+    const LINKBalanceAfterWETHtoLINK = Number(
+      ethers.utils.formatUnits(expandedLINKBalanceAfterWETHtoLINK, DECIMALS)
+    );
 
-  //   console.log(
-  //     `LINK Balance After WETH to LINK: ${LINKBalanceAfterWETHtoLINK}`
-  //   );
+    console.log(
+      `LINK Balance After WETH to LINK: ${LINKBalanceAfterWETHtoLINK}`
+    );
 
-  //   /* Test that we now have more LINK than when we started */
-  //   expect(LINKBalanceAfterWETHtoLINK).is.greaterThan(InitialLINKBalance);
-  // });
-  // it("Fund the vjkNFT Contract with LINK", async function () {
-  //   /* Check LINK Balance before fund */
-  //   const contractInitialLINKBalance = await LINK.balanceOf(
-  //     vjkContract.address
-  //   );
-  //   const contractInitialLINKBalanceNumber = Number(
-  //     ethers.utils.formatUnits(contractInitialLINKBalance, DECIMALS)
-  //   );
-  //   console.log(
-  //     `Contract LINK Balance before Fund: ${contractInitialLINKBalanceNumber} LINK`
-  //   );
+    /* Test that we now have more LINK than when we started */
+    expect(LINKBalanceAfterWETHtoLINK).is.greaterThan(InitialLINKBalance);
+  });
+  it("Fund the vjkNFT Contract with LINK", async function () {
+    /* Check LINK Balance before fund */
+    const contractInitialLINKBalance = await LINK.balanceOf(
+      vjkContract.address
+    );
+    const contractInitialLINKBalanceNumber = Number(
+      ethers.utils.formatUnits(contractInitialLINKBalance, DECIMALS)
+    );
+    console.log(
+      `Contract LINK Balance before Fund: ${contractInitialLINKBalanceNumber} LINK`
+    );
 
-  //   /* Approve the  contract to spend LINK for me */
-  //   const approveLINK = await LINK.approve(vjkContract.address, amountInLink);
-  //   await approveLINK.wait(1);
+    /* Approve the  contract to spend LINK for me */
+    const approveLINK = await LINK.approve(vjkContract.address, amountInLink);
+    await approveLINK.wait(1);
 
-  //   /* Fund contract */
-  //   const transfer = await LINK.transfer(vjkContract.address, amountInLink);
-  //   await transfer.wait(1);
-  //   console.log(`Funded with ${ethers.utils.formatEther(amountInLink)} LINK`);
+    /* Fund contract */
+    const transfer = await LINK.transfer(vjkContract.address, amountInLink);
+    await transfer.wait(1);
+    console.log(`Funded with ${ethers.utils.formatEther(amountInLink)} LINK`);
 
-  //   /* Check Contract LINK Balance after Fund*/
-  //   const ContractLINKBalanceAfterTranfer = await LINK.balanceOf(
-  //     vjkContract.address
-  //   );
-  //   const ContractLINKBalanceAfterTranferNumber = Number(
-  //     ethers.utils.formatUnits(ContractLINKBalanceAfterTranfer, DECIMALS)
-  //   );
-  //   console.log(
-  //     `Contract LINK Balance after Fund: ${ContractLINKBalanceAfterTranferNumber} LINK`
-  //   );
-  //   expect(ContractLINKBalanceAfterTranferNumber).is.greaterThan(
-  //     contractInitialLINKBalanceNumber
-  //   );
-  // });
-  // it("Get Random Words", async function () {
-  //   // vjkContract = await (
-  //   //   await ethers.getContractFactory("vjkNFT")
-  //   // ).attach("0x4DAf17c8142A483B2E2348f56ae0F2cFDAe22ceE");
+    /* Check Contract LINK Balance after Fund*/
+    const ContractLINKBalanceAfterTranfer = await LINK.balanceOf(
+      vjkContract.address
+    );
+    const ContractLINKBalanceAfterTranferNumber = Number(
+      ethers.utils.formatUnits(ContractLINKBalanceAfterTranfer, DECIMALS)
+    );
+    console.log(
+      `Contract LINK Balance after Fund: ${ContractLINKBalanceAfterTranferNumber} LINK`
+    );
+    expect(ContractLINKBalanceAfterTranferNumber).is.greaterThan(
+      contractInitialLINKBalanceNumber
+    );
+  });
+  it("Get Random Words", async function () {
+    // vjkContract = await (
+    //   await ethers.getContractFactory("vjkNFT")
+    // ).attach("0x4DAf17c8142A483B2E2348f56ae0F2cFDAe22ceE");
 
-  //   /* Check Contract LINK Balance */
-  //   const contractLINKBalance = await LINK.balanceOf(vjkContract.address);
-  //   const contractLINKBalanceNumber = Number(
-  //     ethers.utils.formatUnits(contractLINKBalance, DECIMALS)
-  //   );
-  //   console.log(`Contract LINK Balance: ${contractLINKBalanceNumber} LINK`);
-  //   // console.log(vjkContract);
+    /* Check Contract LINK Balance */
+    const contractLINKBalance = await LINK.balanceOf(vjkContract.address);
+    const contractLINKBalanceNumber = Number(
+      ethers.utils.formatUnits(contractLINKBalance, DECIMALS)
+    );
+    console.log(`Contract LINK Balance: ${contractLINKBalanceNumber} LINK`);
+    // console.log(vjkContract);
 
-  //   /* Request Random Words */
-  //   await vjkContract.requestRandomWords("fds", "fsdfsdfs", {
-  //     value: ethers.utils.parseEther(mintPrice),
-  //     gasLimit: 30000000,
-  //   });
+    /* Request Random Words */
+    await vjkContract.requestRandomWords("fds", "fsdfsdfs", {
+      value: ethers.utils.parseEther(mintPrice),
+      gasLimit: 30000000,
+    });
 
-  //   // const lastRequestId = await vjkContract.lastRequestId();
-  //   // console.log("lastRequestId:");
-  //   // console.log(lastRequestId);
+    // const lastRequestId = await vjkContract.lastRequestId();
+    // console.log("lastRequestId:");
+    // console.log(lastRequestId);
 
-  //   // const request = await vjkContract.getRequestStatus(lastRequestId);
-  //   // console.log("request:");
-  //   // console.log(request);
-  // });
+    // const request = await vjkContract.getRequestStatus(lastRequestId);
+    // console.log("request:");
+    // console.log(request);
+  });
 });

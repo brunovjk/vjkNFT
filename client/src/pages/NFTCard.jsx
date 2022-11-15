@@ -11,16 +11,17 @@ import {
   Divider,
 } from "@mui/material";
 import { shortenAddress } from "../utils/shortenAddress";
-import { contractAddress } from "../utils/constants";
+import { VjkNFT_address } from "../utils/constants";
 import { useLocation } from "react-router-dom";
 import { FaEthereum } from "react-icons/fa";
 
 export default function NFTCard() {
   const { addresssender } = useLocation().state.addresssender;
   const { tokenid } = useLocation().state.tokenid;
-  const { nameNFT } = useLocation().state.nameNFT;
-  const { descriptionNFT } = useLocation().state.descriptionNFT;
-  const { vjkNFT } = useLocation().state.vjkNFT;
+  const nameNFT = useLocation().state.nameNFT;
+  const { price } = useLocation().state.price;
+  const descriptionNFT = useLocation().state.descriptionNFT;
+  const vjkNFT = useLocation().state.vjkNFT;
   return (
     <>
       <Box component="div" className="gradient-bg-welcome">
@@ -42,7 +43,7 @@ export default function NFTCard() {
                     backgroundColor: "#fff",
                   }}
                   src={vjkNFT}
-                  alt="vjkNFT"
+                  alt={vjkNFT}
                 />
               </Paper>
             </Grid>
@@ -56,7 +57,7 @@ export default function NFTCard() {
               >
                 <Grid item>
                   <Link
-                    href={`https://ropsten.etherscan.io/address/${contractAddress}`}
+                    href={`https://goerli.etherscan.io/address/${VjkNFT_address}`}
                     underline="none"
                     color="secondary"
                     target="_blank"
@@ -74,7 +75,7 @@ export default function NFTCard() {
                 </Grid>
                 <Grid item>
                   <Link
-                    href={`https://ropsten.etherscan.io/address/${contractAddress}`}
+                    href={`https://goerli.etherscan.io/address/${addresssender}`}
                     underline="none"
                     color="secondary"
                     target="_blank"
@@ -97,7 +98,7 @@ export default function NFTCard() {
                 </Grid>
                 <Grid item mt={2}>
                   <Typography color="secondary" variant="h4">
-                    <FaEthereum size={28} /> 0.05
+                    <FaEthereum size={28} /> {price}
                   </Typography>
                 </Grid>
                 <Grid item mt={2}>
@@ -138,7 +139,7 @@ export default function NFTCard() {
                           </Grid>
                           <Grid item>
                             <Typography color="primary" variant="body2">
-                              {shortenAddress(contractAddress)}
+                              {shortenAddress(VjkNFT_address)}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -195,7 +196,7 @@ export default function NFTCard() {
                           </Grid>
                           <Grid item>
                             <Typography color="secondary" variant="body2">
-                              Ropsten
+                              Goerli
                             </Typography>
                           </Grid>
                         </Grid>

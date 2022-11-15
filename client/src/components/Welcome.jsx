@@ -16,10 +16,18 @@ import Loader from "./Loader";
 
 import { ContractContext } from "../context/ContractContext";
 import { shortenAddress } from "../utils/shortenAddress";
+import { MintingModal } from "./MintingModal";
 
 const Welcome = () => {
-  const { currentAccount, isLoading, connectWallet, createVjkNFT } =
-    useContext(ContractContext);
+  const {
+    chainId,
+    currentAccount,
+    loadingMint,
+    connectWallet,
+    openMintModal,
+    setOpenMintModal,
+  } = useContext(ContractContext);
+  const handleOpenMintModal = () => setOpenMintModal(true);
 
   return (
     <Container maxWidth="xl">
@@ -78,15 +86,10 @@ const Welcome = () => {
                 {" "}
                 brunovjk{" "}
               </Link>
-              Portfolio <br /> Connect your Wallet to Ropsten Testnet Network,
+              Portfolio <br /> Connect your Wallet to Goerli Testnet Network,
               <br />
               click _Mint and receive a NFT pseudo Random SVG Painting.
             </Typography>
-          </Grid>
-          <Grid item>
-            {!currentAccount && (
-              <Button onClick={connectWallet}>Connect Wallet</Button>
-            )}
           </Grid>
         </Grid>
 
@@ -173,7 +176,9 @@ const Welcome = () => {
                         }}
                         mt={1}
                       >
-                        Ropsten Testnet
+                        {chainId === 5
+                          ? "Goerli Testnet"
+                          : "Please switch to Goerli"}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -210,18 +215,35 @@ const Welcome = () => {
                       }}
                     >
                       <Box mt={1}>
-                        {isLoading ? (
+                        {loadingMint ? (
                           <Loader />
+                        ) : currentAccount ? (
+                          chainId === 5 ? (
+                            <Button
+                              onClick={handleOpenMintModal}
+                              variant="outlined"
+                              sx={{
+                                width: "12rem",
+                                height: "30px",
+                              }}
+                            >
+                              _Mint
+                            </Button>
+                          ) : (
+                            <Typography
+                              color="secondary"
+                              fontWeight="600"
+                              sx={{
+                                fontSize: "1.125rem",
+                                lineHeight: "1.75rem",
+                              }}
+                            >
+                              Please switch to Goerli
+                            </Typography>
+                          )
                         ) : (
-                          <Button
-                            onClick={createVjkNFT}
-                            variant="outlined"
-                            sx={{
-                              width: "12rem",
-                              height: "30px",
-                            }}
-                          >
-                            _Mint
+                          <Button onClick={connectWallet}>
+                            Connect Wallet
                           </Button>
                         )}
                       </Box>
@@ -233,6 +255,10 @@ const Welcome = () => {
           </Grid>
         </Grid>
       </Grid>
+      <MintingModal
+        openMintModal={openMintModal}
+        setOpenMintModal={setOpenMintModal}
+      />
     </Container>
   );
 };

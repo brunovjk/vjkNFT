@@ -16,7 +16,8 @@ import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import { ContractContext } from "../context/ContractContext";
 
-import { contractABI, contractAddress } from "../utils/constants";
+import { VjkNFT_address } from "../utils/constants";
+import { contractABI } from "../utils/abis";
 import { shortenAddress } from "../utils/shortenAddress";
 import { ethers } from "ethers";
 import BigNumber from "bignumber.js";
@@ -28,7 +29,7 @@ const getvjkNFTContract = () => {
   const signer = provider.getSigner(0);
 
   const vjkNFTContract = new ethers.Contract(
-    contractAddress,
+    VjkNFT_address,
     contractABI,
     signer
   );
@@ -41,6 +42,7 @@ export default function Interactions() {
   const [contractOwner, setContractOwner] = useState("");
   const [contractMintPrice, setContractMintPrice] = useState("");
   const [contractTotalSupply, setContractTotalSupply] = useState("");
+  const [contractMaxSupply, setContractMaxSupply] = useState("");
   // const [tokenIdBurn, setTokenIdBurn] = useState("");
   const [tokenIdOwnerOf, setTokenIdOwnerOf] = useState("");
   const [ownerOf, setOwnerOf] = useState("");
@@ -60,8 +62,7 @@ export default function Interactions() {
 
   const [tokenIdtokenURI, setTokenIdtokenURI] = useState("");
 
-  const { currentAccount, isLoading, connectWallet, createVjkNFT } =
-    useContext(ContractContext);
+  const { currentAccount, connectWallet } = useContext(ContractContext);
 
   // const getWithdraw = async () => {
   //   setWithdrawSuccess(false);
@@ -130,6 +131,18 @@ export default function Interactions() {
       const totalSupplyBigNumber = await vjkNFTContract.totalSupply();
       const totalSupply = BigNumber(totalSupplyBigNumber._hex).c[0];
       setContractTotalSupply(totalSupply);
+    } catch (error) {
+      console.log(error);
+      alert.error("There's no valid Contract");
+      throw new Error("There's no valid Contract");
+    }
+  };
+  const getContractMaxSupply = async () => {
+    try {
+      const vjkNFTContract = getvjkNFTContract();
+      const maxSupplyBigNumber = await vjkNFTContract.maxSupply();
+      const maxSupply = BigNumber(maxSupplyBigNumber._hex).c[0];
+      setContractMaxSupply(maxSupply);
     } catch (error) {
       console.log(error);
       alert.error("There's no valid Contract");
@@ -329,7 +342,7 @@ export default function Interactions() {
                           }}
                           mt={1}
                         >
-                          Ropsten Testnet
+                          Goerli Testnet
                         </Typography>
                       </Grid>
                     </Grid>
@@ -404,7 +417,7 @@ export default function Interactions() {
                             </Typography>
                           ) : (
                             <Typography color="primary" variant="body2">
-                              {shortenAddress(contractAddress)}
+                              {shortenAddress(VjkNFT_address)}
                             </Typography>
                           )}
                         </Grid>
@@ -454,7 +467,7 @@ export default function Interactions() {
                             </Typography>
                           ) : (
                             <Typography color="secondary" variant="body2">
-                              Ropsten
+                              Goerli
                             </Typography>
                           )}
                         </Grid>
@@ -679,6 +692,7 @@ export default function Interactions() {
                         </Grid>
                       </Grid>
                     </Grid>
+
                     <Grid
                       item
                       sx={{
@@ -694,23 +708,18 @@ export default function Interactions() {
                       >
                         <Grid item xs={4}>
                           <Button
-                            onClick={createVjkNFT}
-                            variant="outlined"
+                            onClick={getContractMaxSupply}
                             fullWidth={true}
                           >
-                            _Mint
+                            maxSupply
                           </Button>
                         </Grid>
-                        <Grid
-                          item
-                          xs={4}
-                          sx={{
-                            height: "72px",
-                          }}
-                        >
-                          {!isLoading ? <></> : <Loader />}
-                        </Grid>
                         <Grid item xs={4}></Grid>
+                        <Grid item xs={4}>
+                          <Typography color="secondary">
+                            {contractMaxSupply}
+                          </Typography>
+                        </Grid>
                       </Grid>
                     </Grid>
                     {/* <Grid

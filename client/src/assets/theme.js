@@ -33,7 +33,6 @@ export const theme = createTheme({
         },
       },
     },
-
     MuiInputBase: {
       styleOverrides: {
         root: {

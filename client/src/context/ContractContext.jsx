@@ -1,18 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import { ethers } from "ethers";
-import { contractABI, contractAddress } from "../utils/constants";
-import { Buffer } from "buffer";
+import {
+  VjkNFT_address,
+  APIConsumer_address,
+  VRF_address,
+} from "../utils/constants";
+import { contractABI, APIConsumer_ABI, VRF_ABI } from "../utils/abis";
+
 import BigNumber from "bignumber.js";
 import { useAlert } from "react-alert";
 
-export const ContractContext = React.createContext();
-const { ethereum } = window;
-const getvjkNFTContract = () => {
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const signer = provider.getSigner(0);
+export const ContractContext = createContext();
 
+const { ethereum } = window;
+
+const provider = new ethers.providers.Web3Provider(ethereum);
+const signer = provider.getSigner(0);
+
+const gasToMint = 1500000;
+const priceToMint = "0.09625";
+
+const getvjkNFTContract = () => {
   const vjkNFTContract = new ethers.Contract(
-    contractAddress,
+    VjkNFT_address,
     contractABI,
     signer
   );
@@ -21,102 +31,22 @@ const getvjkNFTContract = () => {
 
 export const VjkNFTContractProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMint, setLoadingMint] = useState(false);
+  const [loadingApp, setLoadingApp] = useState(false);
+  const [openMintModal, setOpenMintModal] = useState(false);
+  const [chainId, setChainId] = useState(0);
   const [collections, setCollections] = useState([]);
-  const [refreshAfterMint, setRefreshAfterMint] = useState(false);
   const alert = useAlert();
 
-  let Chance = require("chance");
-  let chance = new Chance();
-
-  // Generate a svg randomly
-  chance.mixin({
-    svg: function (options) {
-      options = options || {};
-      options.max_size = 20;
-      options.lines = 12;
-      options.circles = 12;
-      options.triangles = 12;
-      options.opacity = 0.3;
-      options.background = chance.color();
-
-      // Create a coordinate within an area bigger than the svg
-      function point(min, max) {
-        return chance.integer({ min: min || -10, max: max || 110 });
-      }
-
-      // Generate the actual svg
-      // Docs: developer.mozilla.org/en-US/docs/Web/SVG/Element/line
-      // viewBox use: stackoverflow.com/q/17498855
-      let svg =
-        '<svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="background-color:' +
-        options.background +
-        '">';
-      for (let i = 0; i < options.lines; i++) {
-        svg += '<line stroke="' + chance.color() + '" ';
-        svg += 'stroke-width="' + point(1, 5) + '" ';
-        svg += 'opacity="' + options.opacity + '" ';
-        svg += 'x1="' + point() + '" y1="' + point() + '" ';
-        svg += 'x2="' + point() + '" y2="' + point() + '" />';
-      }
-      for (let i = 0; i < options.circles; i++) {
-        svg += '<circle cx="' + point() + '" ';
-        svg += 'cy="' + point() + '" ';
-        svg += 'r="' + point(1, options.max_size / 2) + '" ';
-        svg += 'opacity="' + options.opacity + '" ';
-        svg += 'fill="' + chance.color() + '"/>';
-      }
-      for (let i = 0; i < options.triangles; i++) {
-        let s = options.max_size;
-        svg += '<polygon fill="' + chance.color() + '" points="';
-        let x = point();
-        let y = point();
-        svg += x + "," + y + " ";
-        svg += x + point(-s, s) + "," + (y + point(-s, s)) + " ";
-        svg += x + point(-s, s) + "," + (y + point(-s, s));
-        svg += '" opacity="' + options.opacity + '" ';
-        svg += "/>";
-      }
-      return svg + "</svg>";
-    },
+  const [mintSteps, setMintSteps] = useState({
+    minting: false,
+    interviewing: false,
+    painting: false,
+    creating: false,
+    created: false,
+    tx_hash: "",
   });
-  const chanceSvg = () => {
-    let chanceSvg = `${chance.svg({})}`;
-    let svgBase64 = "data:image/svg+xml;base64,";
-    let svgEncoded64 = Buffer.from(chanceSvg).toString("base64");
-    let svg = svgBase64 + svgEncoded64;
 
-    return svg;
-  };
-  const chanceNameNFT = () => {
-    let nameNFTFisrt = chance.first();
-    let nameNFTNumber = chance.natural({ min: 1000, max: 9999 });
-    let nameNFT = `${nameNFTFisrt} #${nameNFTNumber}`;
-
-    return nameNFT;
-  };
-  const chanceDescriptionNFT = () => {
-    let descriptionNameNFT = chance.name();
-    let descriptionCountryNFT = chance.country({ full: true });
-    let descriptionYearNFT = chance.natural({ min: 1000, max: 1999 });
-    let descriptionGenderNFT = chance.pickone(["He", "She"]);
-    let descriptionAnimalNFT = chance.animal();
-
-    let descriptionNFT = `This work of art is made by ${descriptionNameNFT} from ${descriptionCountryNFT} in ${descriptionYearNFT}. ${descriptionGenderNFT} told us that this peace was inspired by ${descriptionAnimalNFT}.`;
-
-    return descriptionNFT;
-  };
-  const formatTokenURI = () => {
-    const nameNFT = chanceNameNFT();
-    const descriptionNFT = chanceDescriptionNFT();
-    // const uriBase = {
-    //   Name: `${nameNFT}`,
-    //   Description: `${descriptionNFT}`,
-    // };
-    // const uriBase64 = Buffer.from(JSON.stringify(uriBase)).toString("base64");
-
-    return nameNFT, descriptionNFT;
-  };
   const checkIfWalletisConnected = async () => {
     try {
       if (!ethereum)
@@ -126,7 +56,25 @@ export const VjkNFTContractProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-        getAllCollections();
+        // getAllCollections();
+      } else {
+        console.log("No accounts found.");
+      }
+    } catch (error) {
+      console.log(error);
+
+      throw new Error("No ethereum object.");
+    }
+  };
+  const checkChainId = async () => {
+    try {
+      if (!ethereum)
+        return alert.error("Please install a Cryptocurrency Software Wallet");
+
+      const chainId = await ethereum.request({ method: "eth_chainId" });
+
+      if (chainId.length) {
+        setChainId(parseInt(chainId, 16));
       } else {
         console.log("No accounts found.");
       }
@@ -141,6 +89,7 @@ export const VjkNFTContractProvider = ({ children }) => {
       if (!ethereum)
         return alert.error("Please install a Cryptocurrency Software Wallet");
       const vjkNFTContract = getvjkNFTContract();
+
       const totalSupplyBigNumber = await vjkNFTContract.totalSupply();
       const totalSupply = BigNumber(totalSupplyBigNumber._hex).c[0];
 
@@ -150,7 +99,8 @@ export const VjkNFTContractProvider = ({ children }) => {
         collection[i] = {
           tokenid: i,
           addresssender: await vjkNFTContract.ownerOf(i),
-          uri: await vjkNFTContract.tokenURI(i),
+          uri64: await vjkNFTContract.tokenURI(i),
+          mintPrice: await vjkNFTContract.mintPrice(),
         };
       }
       setCollections(collection);
@@ -178,25 +128,40 @@ export const VjkNFTContractProvider = ({ children }) => {
     try {
       if (!ethereum)
         return alert.error("Please install a Cryptocurrency Software Wallet");
-      setIsLoading(true);
-
       const vjkNFTContract = getvjkNFTContract();
-
-      const uri = formatTokenURI();
-      const create_tx = await vjkNFTContract.safeMint(uri, {
-        value: ethers.utils.parseEther("0.05"),
+      // Create NFT
+      const create_tx = await vjkNFTContract.mint(gasToMint, {
+        value: ethers.utils.parseEther(priceToMint),
+        gasLimit: gasToMint,
       });
+      // Start create
       console.log(`Loading - ${create_tx.hash}`);
+      setMintSteps({ ...mintSteps, minting: true });
+      // NFT Minted, now wait or close
       await create_tx.wait(1);
+      setMintSteps({
+        ...mintSteps,
+        minting: false,
+        interviewing: true,
+        tx_hash: `${create_tx.hash}`,
+      });
+      // Set alert, when quote exists
 
-      alert.success("You have minted your NFT with Success");
-      setIsLoading(false);
-      setRefreshAfterMint(true);
+      // Set alert, when svg exists
+
+      // TokenURI exists
     } catch (error) {
       console.log(error);
-
-      setIsLoading(false);
-
+      setMintSteps({
+        minting: false,
+        interviewing: false,
+        painting: false,
+        creating: false,
+        created: false,
+        tx_hash: "",
+      });
+      setLoadingMint(false);
+      setOpenMintModal(false);
       alert.error(
         "No able to mint. Check if you send the right Mint price or reach the Max token per Wallet"
       );
@@ -207,20 +172,95 @@ export const VjkNFTContractProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (ethereum) {
+      ethereum.on("chainChanged", () => {
+        setLoadingApp(true);
+        checkChainId();
+        setTimeout(() => {
+          setLoadingApp(false);
+        }, 500);
+      });
+      ethereum.on("accountsChanged", () => {
+        setLoadingApp(true);
+        checkIfWalletisConnected();
+        setTimeout(() => {
+          setLoadingApp(false);
+        }, 500);
+      });
+      if (mintSteps.interviewing) {
+        // Set alert, when quote exists
+        const APIConsumer = new ethers.Contract(
+          APIConsumer_address,
+          APIConsumer_ABI,
+          signer
+        );
+        APIConsumer.once("RequestQuote", async (res) => {
+          console.log("RequestQuote event fired!", res);
+          setMintSteps({
+            ...mintSteps,
+            interviewing: false,
+            painting: true,
+            tx_hash: res.toString(),
+          });
+        });
+      } else if (mintSteps.painting) {
+        // Set alert, when svg exists
+        const VRF = new ethers.Contract(VRF_address, VRF_ABI, signer);
+        VRF.once("RequestSVG", async (res) => {
+          console.log("RequestSVG event fired!", res);
+          setMintSteps({
+            ...mintSteps,
+            painting: false,
+            creating: true,
+            tx_hash: res.toString(),
+          });
+        });
+      } else if (mintSteps.creating) {
+        // TokenURI exists
+        const vjkContract = new ethers.Contract(
+          VjkNFT_address,
+          contractABI,
+          signer
+        );
+        vjkContract.once("Created", async (res) => {
+          console.log("Created event fired!", res);
+          setMintSteps({
+            ...mintSteps,
+            creating: false,
+            created: true,
+            tx_hash: res.toString(),
+          });
+        });
+      } else if (mintSteps.created) {
+        alert.success("We have Created your NFT with Success");
+        setLoadingMint(false);
+      }
+    }
+  });
+
+  useEffect(() => {
     checkIfWalletisConnected();
+    checkChainId();
     getAllCollections();
-    setRefreshAfterMint(false);
-  }, [currentAccount, refreshAfterMint]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentAccount]);
 
   return (
     <ContractContext.Provider
       value={{
         //States:
+        gasToMint,
+        priceToMint,
         currentAccount,
-        isLoading,
+        loadingMint,
+        loadingApp,
+        chainId,
         collections,
+        mintSteps,
+        openMintModal,
         //Functions:
         connectWallet,
+        setOpenMintModal,
         createVjkNFT,
       }}
     >

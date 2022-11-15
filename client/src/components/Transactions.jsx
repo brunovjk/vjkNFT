@@ -1,20 +1,39 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { ContractContext } from "../context/ContractContext";
 import { Box, Grid, Paper, Typography, Link, CardMedia } from "@mui/material";
 import { shortenAddress } from "../utils/shortenAddress";
-import { contractAddress } from "../utils/constants";
+import { VjkNFT_address } from "../utils/constants";
 import { Buffer } from "buffer";
 import { FaEthereum } from "react-icons/fa";
+import { ethers } from "ethers";
 
-const CollectionCard = ({ tokenid, addresssender, uri }) => {
-  const splitedURI = uri.split("data:application/json;base64,")[1];
-  const decodeBase64Uri = JSON.parse(
-    Buffer.from(splitedURI, "base64").toString("utf-8")
-  );
-  const nameNFT = decodeBase64Uri.Name;
-  const descriptionNFT = decodeBase64Uri.Description;
-  const vjkNFT = decodeBase64Uri.Painting;
+const CollectionCard = ({ tokenid, addresssender, uri64, mintPrice }) => {
+  const [uri, setUri] = useState({
+    name: "Minting",
+    description: "Interviewing",
+    image: "Paiting",
+  });
+
+  useEffect(() => {
+    const splitedURI = uri64?.split("data:application/json;base64,")[1];
+
+    if (splitedURI !== undefined) {
+      const decodeBase64Uri = JSON.parse(
+        Buffer.from(splitedURI, "base64").toString("utf-8")
+      );
+      setUri(decodeBase64Uri);
+    } else {
+      setUri({
+        name: "Framing",
+        description: "Framing your paint",
+        image:
+          "https://media.istockphoto.com/id/917220700/vector/picture-frame-graphic-black-white-isolated-sketch-set-illustration-vector.jpg?s=612x612&w=0&k=20&c=LQLiD1y6nH_IIuM58L4fAi0G5s6_T3Y2X1Vr9hlolQc=",
+      });
+    }
+  }, [uri64]);
+
+  const price = ethers.utils.formatEther(mintPrice.toString());
 
   const linkTokenId = `/${tokenid}`;
 
@@ -39,7 +58,7 @@ const CollectionCard = ({ tokenid, addresssender, uri }) => {
         >
           <Grid item>
             <Typography color="secondary" variant="h5">
-              {nameNFT}
+              {uri.name}
             </Typography>
           </Grid>
           <Grid item my={2}>
@@ -48,9 +67,10 @@ const CollectionCard = ({ tokenid, addresssender, uri }) => {
               state={{
                 addresssender: { addresssender },
                 tokenid: { tokenid },
-                nameNFT: { nameNFT },
-                descriptionNFT: { descriptionNFT },
-                vjkNFT: { vjkNFT },
+                price: { price },
+                nameNFT: uri.name,
+                descriptionNFT: uri.description,
+                vjkNFT: uri.image,
               }}
               style={{ textDecoration: "none" }}
             >
@@ -62,14 +82,14 @@ const CollectionCard = ({ tokenid, addresssender, uri }) => {
                   border: 0,
                   cursor: "pointer",
                 }}
-                src={vjkNFT}
-                alt="vjkNFT"
+                src={uri.image}
+                alt={uri.image}
               />
             </NavLink>
           </Grid>
           <Grid item>
             <Link
-              href={`https://ropsten.etherscan.io/address/${addresssender}`}
+              href={`https://goerli.etherscan.io/address/${addresssender}`}
               underline="none"
               color="secondary"
               target="_blank"
@@ -95,7 +115,7 @@ const CollectionCard = ({ tokenid, addresssender, uri }) => {
             >
               <Grid item>
                 <Link
-                  href={`https://ropsten.etherscan.io/token/${contractAddress}`}
+                  href={`https://goerli.etherscan.io/token/${VjkNFT_address}`}
                   underline="none"
                   color="secondary"
                   target="_blank"
@@ -108,7 +128,7 @@ const CollectionCard = ({ tokenid, addresssender, uri }) => {
               </Grid>
               <Grid item mr={1}>
                 <Typography color="secondary" variant="subtitle1">
-                  <FaEthereum size={14} /> 0.05
+                  <FaEthereum size={14} /> {price}
                 </Typography>
               </Grid>
             </Grid>
