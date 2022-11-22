@@ -19,7 +19,7 @@ Our program consists of a group of smart contracts, which automatically interact
 - `Swaper.sol` Contract responsible for swapping ETH for ChainLink token. All automation of our software is done using tools supported by ChainLink. Before starting any process, we need ChainLink Token.
 - `APIConsumer.sol` Contract responsible for interviewing Kenny West, and returning us an epic quote, hehe.
 - `VRF.sol` Contract responsible for requesting some random numbers using ChainLink VRF, with those numbers, the same contract creates a unique SVG.
-- `VjkNFT.sol` Main contract responsible for automating the entire process and storing the entire collection of NFTs and profits after creating them.
+- `VjkNFT.sol` Main contract responsible for automating the entire process and storing the entire collection of NFTs and remaining ChainLink tokens.
 
 ## ☕ Using VjkNFT
 
