@@ -50,7 +50,7 @@ contract VjkNFT is ERC721, ERC721URIStorage, Ownable {
     AutomationRegistryInterface private immutable registry;
     bytes4 registerSig = KeeperRegistrarInterface.register.selector;
 
-    event Created(uint256 indexed tokenID);       
+    event Created(uint256 indexed tokenID);
 
     constructor(
         IAPIConsumer _apiConsumer,
@@ -71,7 +71,7 @@ contract VjkNFT is ERC721, ERC721URIStorage, Ownable {
         registrar = _registrar;
         registry = _registry;
 
-        mintPrice = 0.09625 ether; // 96250000000000000 wei
+        mintPrice = 0.08625 ether; // 86250000000000000 wei
         maxPerWallet = 3;
         maxSupply = 9999;
 
@@ -146,7 +146,12 @@ contract VjkNFT is ERC721, ERC721URIStorage, Ownable {
         );
 
         _ID = ID(
-            string(abi.encodePacked("VJK", Strings.toString(_tokenIdCounter.current()))),
+            string(
+                abi.encodePacked(
+                    "VJK",
+                    Strings.toString(_tokenIdCounter.current())
+                )
+            ),
             _tokenIdCounter.current(),
             apiConsumer.requestQuoteData(),
             vrf.requestRandomWords()
@@ -225,7 +230,6 @@ contract VjkNFT is ERC721, ERC721URIStorage, Ownable {
         if (apiConsumer.exists(_ID.quoteID) && vrf.exists(_ID.svgID)) {
             _setTokenURI(_ID.tokenID, createUri(_ID));
             emit Created(_ID.tokenID);
-            registry.cancelUpkeep(tokenToUpkeepID[_ID.tokenID]);           
         }
     }
 

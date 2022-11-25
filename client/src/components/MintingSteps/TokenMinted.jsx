@@ -20,8 +20,7 @@ export default function TokenMinted({ tx_hash }) {
       </Link>
       <Typography variant="body2" textAlign="center">
         You can close this window at any time, the creation of your art can no
-        longer be stopped. In a few minutes you can see your new NFT on our dApp
-        ours in your wallet
+        longer be stopped.
       </Typography>
     </Stack>
   );

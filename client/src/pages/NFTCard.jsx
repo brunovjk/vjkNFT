@@ -86,14 +86,10 @@ export default function NFTCard() {
                     </Typography>
                   </Link>
                 </Grid>
-                <Grid item>
-                  <Typography color="secondary" variant="h6">
-                    Description
-                  </Typography>
-                </Grid>
+
                 <Grid item>
                   <Typography color="secondary" variant="body1">
-                    {descriptionNFT}
+                    " {descriptionNFT} " K. W.
                   </Typography>
                 </Grid>
                 <Grid item mt={2}>

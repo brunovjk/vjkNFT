@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Typography, Button } from "@mui/material";
+import { Stack, Typography, Button, Link } from "@mui/material";
 
 export default function ShowNFT() {
   return (
@@ -14,8 +14,16 @@ export default function ShowNFT() {
       </Typography>
       <Typography variant="body2" textAlign="center">
         You've just created a unique NFT, maybe we still need some time to get
-        your painting on the frame. But don't worry, you can already check your
-        wallet.
+        your painting on the frame. But don't worry, if you already have our{" "}
+        <Link
+          target="_blank"
+          rel="noopener"
+          href="/tutorials#AddYourToken"
+          style={{ textDecoration: "none" }}
+        >
+          token added
+        </Link>{" "}
+        to your wallet, you can already can check yous IDs.
       </Typography>
 
       <Button onClick={() => window.location.reload(false)}>Refresh</Button>

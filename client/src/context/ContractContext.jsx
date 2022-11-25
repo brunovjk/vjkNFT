@@ -18,7 +18,7 @@ const provider = new ethers.providers.Web3Provider(ethereum);
 const signer = provider.getSigner(0);
 
 const gasToMint = 1500000;
-const priceToMint = "0.09625";
+const priceToMint = "0.08625";
 
 const getvjkNFTContract = () => {
   const vjkNFTContract = new ethers.Contract(

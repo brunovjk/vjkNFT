@@ -60,8 +60,8 @@ const Welcome = () => {
                 lineHeight: { xs: "2.25rem", sm: "1" },
               }}
             >
-              Fully on-chain
-              <br /> NFT͟ Collection
+              Automatic
+              <br /> NFT Generator
             </Typography>
           </Grid>
           <Grid item>
@@ -86,9 +86,9 @@ const Welcome = () => {
                 {" "}
                 brunovjk{" "}
               </Link>
-              Portfolio <br /> Connect your Wallet to Goerli Testnet Network,
+              Portfolio. <br /> Connect your Wallet to Goerli Testnet Network,
               <br />
-              click _Mint and receive a NFT pseudo Random SVG Painting.
+              click _Mint and generate a your VjkNFT.
             </Typography>
           </Grid>
         </Grid>

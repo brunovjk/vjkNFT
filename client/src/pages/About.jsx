@@ -13,6 +13,12 @@ import {
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ContractContext } from "../context/ContractContext";
+import {
+  Swaper_address,
+  APIConsumer_address,
+  VRF_address,
+  VjkNFT_address,
+} from "../utils/constants";
 
 function ScrollTop(props) {
   const { children } = props;
@@ -124,9 +130,10 @@ export default function About(props) {
                 What Is It?
               </Typography>
               <Typography variant="body1" mb={2}>
-                vjkNFT is a dApp developed by Bruno Rocha. Our application
-                consists of a Smart Contract and a React App to interact with
-                the blockchain, where this contract is deployed.
+                vjkNFT is a dApp developed by Bruno Rocha. Our program consists
+                of a group of smart contracts, which automatically interact with
+                a single smart contrast: VjkNFT.sol, and this react application
+                to interact with this contract.
               </Typography>
               <Typography variant="body1" mb={2}>
                 Our Contract follows the Token Standard ERC721, with extensions:
@@ -136,9 +143,60 @@ export default function About(props) {
                 time of writing.
               </Typography>
               <Typography variant="body1" mb={2}>
-                At mint step, our application generates an SVG painting and some
-                characteristics for that frame, such as: Name, Author, Date,
-                Place and Inspiration for the painting.
+                -{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener"
+                  style={{ textDecoration: "none" }}
+                  href={`https://goerli.etherscan.io/address/${Swaper_address}`}
+                >
+                  Swaper.sol
+                </Link>{" "}
+                Contract responsible for swapping ETH for ChainLink token. All
+                automation of our software is done using tools supported by
+                ChainLink Labs. Before starting any process, we need ChainLink
+                Token.
+              </Typography>
+              <Typography variant="body1" mb={2}>
+                -{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener"
+                  style={{ textDecoration: "none" }}
+                  href={`https://goerli.etherscan.io/address/${APIConsumer_address}`}
+                >
+                  APIConsumer.sol
+                </Link>{" "}
+                Contract responsible for interviewing Kenny West, and returning
+                us an epic quote, hehe.{" "}
+              </Typography>
+              <Typography variant="body1" mb={2}>
+                -{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener"
+                  style={{ textDecoration: "none" }}
+                  href={`https://goerli.etherscan.io/address/${VRF_address}`}
+                >
+                  VRF.sol
+                </Link>{" "}
+                Contract responsible for requesting some random numbers using
+                ChainLink VRF, with those numbers, the same contract creates a
+                unique SVG.{" "}
+              </Typography>
+              <Typography variant="body1" mb={2}>
+                -{" "}
+                <Link
+                  target="_blank"
+                  rel="noopener"
+                  style={{ textDecoration: "none" }}
+                  href={`https://goerli.etherscan.io/address/${VjkNFT_address}`}
+                >
+                  VjkNFT.sol
+                </Link>{" "}
+                Main contract responsible for automating the entire process and
+                storing the entire collection of NFTs and profits after creating
+                them.{" "}
               </Typography>
               <Typography variant="body1" mb={2}>
                 Our complete code, as well as the Design System can be seen
@@ -196,8 +254,8 @@ export default function About(props) {
                 Our collection follows some of the newest Good Practices and
                 Safety standards. However, it is still a model application, in
                 order to demonstrate the developer's skills. If you are thinking
-                of purchasing one of our parts, go ahead, but we do not offer
-                any warranty or insurance.
+                of purchasing one of our peaces, take some faucet and go ahead,
+                but we do not offer any warranty or support.
               </Typography>
               <Typography variant="body1" mb={2}>
                 Please feel free to contact us (brunovjk@brunovjk.com) if you

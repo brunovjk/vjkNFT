@@ -1,7 +1,7 @@
-export const APIConsumer_address = "0x14B5a6fdd6D49e4fea2e42313eF31C9991Bcff3B";
-export const VRF_address = "0xB878c1C0B67e4E061ff972665D5aB4007CE3967E";
-export const Swaper_address = "0x13fFd9378FDb855281b9Bd7c8fCDFEd7666cC9b9";
-export const VjkNFT_address = "0x8aC9F9D86780dC4DA7b76A51370639D70E58e3B0";
+export const APIConsumer_address = "0xfe72F27D1454591757c30Cb5958Ed0F257BFFa5C";
+export const VRF_address = "0x91c637bc10E657D0dE53eA9ad9527559f2Ee8a53";
+export const Swaper_address = "0x0bba2eE16cF1F786Cb568D9f5f47cb8276DdECFF";
+export const VjkNFT_address = "0x4A9f1122c1898DE7218B5eF5b49c4EFEB23Db1D6";
 
 export const link_oracle_address = {
   goerli: "0xCC79157eb46F5624204f47AB42b3906cAA40eaB7",

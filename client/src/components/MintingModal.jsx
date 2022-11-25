@@ -53,7 +53,7 @@ export function MintingModal({ openMintModal, setOpenMintModal }) {
       setTabValue(2);
       setTimeout(() => {
         setTabValue(3);
-      }, 3000);
+      }, 4000);
     } else if (mintSteps.painting) {
       setTabValue(4);
       setTimeout(() => {

@@ -14,7 +14,7 @@
 
 ## 🚀 Automatic NFTs Generator
 
-Our program consists of a group of smart contracts, which automatically interact with a single smart contract: `VjkNFT.sol`, and a react application to interact with this contract:
+Our program consists of a group of smart contracts, which automatically interact with a single smart contract: `VjkNFT.sol: 0x4A9f1122c1898DE7218B5eF5b49c4EFEB23Db1D6 Goerli`, and a react application to interact with this contract:
 
 - `Swaper.sol` Contract responsible for swapping ETH for ChainLink token. All automation of our software is done using tools supported by ChainLink. Before starting any process, we need ChainLink Token.
 - `APIConsumer.sol` Contract responsible for interviewing Kenny West, and returning us an epic quote, hehe.

@@ -216,7 +216,7 @@ export default function Tutorials(props) {
                 Goerli Testnet
               </Typography>
               <Typography variant="body1" mb={4}>
-                We deployed this project at Goerli Ethereum, also known as
+                We deployed this project at Goerli Network, also known as
                 “Ethereum Testnet”, are as the name implies, a testing network
                 that runs the same protocol as Ethereum does and is used to
                 testing purposes before deploying on the main network (Mainnet).
@@ -229,32 +229,27 @@ export default function Tutorials(props) {
                 target="_blank"
                 rel="noopener"
                 style={{ textDecoration: "none" }}
-                href="https://faucet.metamask.io/"
+                href="https://goerlifaucet.com/"
               >
                 <Typography variant="body1" my={1}>
-                  https://faucet.metamask.io/
+                  https://goerlifaucet.com/
                 </Typography>
               </Link>
               <Link
                 target="_blank"
                 rel="noopener"
                 style={{ textDecoration: "none" }}
-                href="https://faucet.egorfine.com/"
+                href="https://faucets.chain.link/"
               >
                 <Typography variant="body1" my={1}>
-                  https://faucet.egorfine.com/
+                  https://faucets.chain.link/
                 </Typography>
               </Link>
-              <Link
-                target="_blank"
-                rel="noopener"
-                style={{ textDecoration: "none" }}
-                href="https://faucet.dimensions.network/"
-              >
-                <Typography variant="body1" my={1} mb={6}>
-                  https://faucet.dimensions.network/
-                </Typography>
-              </Link>
+
+              <Typography variant="body1" my={1} mb={6}>
+                These sites can be disabled, but you can always go to a search
+                engine and search for Goerli Faucet.
+              </Typography>
 
               <Divider />
               <Typography variant="h3" id="WalletMetamask" my={6}>

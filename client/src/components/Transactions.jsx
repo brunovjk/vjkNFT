@@ -1,12 +1,23 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { ContractContext } from "../context/ContractContext";
-import { Box, Grid, Paper, Typography, Link, CardMedia } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Paper,
+  Typography,
+  Link,
+  CardMedia,
+  Stack,
+  CircularProgress,
+} from "@mui/material";
 import { shortenAddress } from "../utils/shortenAddress";
 import { VjkNFT_address } from "../utils/constants";
 import { Buffer } from "buffer";
 import { FaEthereum } from "react-icons/fa";
 import { ethers } from "ethers";
+
+const { ethereum } = window;
 
 const CollectionCard = ({ tokenid, addresssender, uri64, mintPrice }) => {
   const [uri, setUri] = useState({
@@ -139,7 +150,7 @@ const CollectionCard = ({ tokenid, addresssender, uri64, mintPrice }) => {
   );
 };
 const Collections = () => {
-  const { currentAccount, collections } = useContext(ContractContext);
+  const { collections } = useContext(ContractContext);
   return (
     <Box>
       <Grid
@@ -149,29 +160,44 @@ const Collections = () => {
         alignItems="stretch"
       >
         <Grid item>
-          {!currentAccount ? (
-            <Typography align="center" variant="h4" color="secondary">
-              Please Connect to your Wallet to see the Latest Collections
-            </Typography>
+          {collections.length > 0 ? (
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Typography align="center" variant="h4" color="secondary">
+                Latest VjkNFTs minted
+              </Typography>
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                mt={10}
+              >
+                {collections
+                  .slice(0, 12)
+                  .reverse()
+                  .map((collection, i) => (
+                    <CollectionCard key={i} {...collection} />
+                  ))}
+              </Grid>
+            </Stack>
           ) : (
-            <Typography align="center" variant="h4" color="secondary">
-              Latest vjkNFTs minted
-            </Typography>
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Typography align="center" variant="h4" color="secondary">
+                Please wait, loading Latest VjkNFTs minted.
+              </Typography>
+              <CircularProgress />
+            </Stack>
           )}
-        </Grid>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          mt={10}
-        >
-          {collections
-            .slice(0, 12)
-            .reverse()
-            .map((collection, i) => (
-              <CollectionCard key={i} {...collection} />
-            ))}
         </Grid>
       </Grid>
     </Box>

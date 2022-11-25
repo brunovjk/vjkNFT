@@ -12,7 +12,6 @@ import {
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 
-import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import { ContractContext } from "../context/ContractContext";
 
