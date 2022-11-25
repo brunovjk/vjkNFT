@@ -14,17 +14,18 @@ export const ContractContext = createContext();
 
 const { ethereum } = window;
 
-const provider = new ethers.providers.Web3Provider(ethereum);
-const signer = provider.getSigner(0);
+const provider = ethereum
+  ? new ethers.providers.Web3Provider(ethereum, "any")
+  : undefined;
 
 const gasToMint = 1500000;
-const priceToMint = "0.08625";
+const priceToMint = "0.09625";
 
 const getvjkNFTContract = () => {
   const vjkNFTContract = new ethers.Contract(
     VjkNFT_address,
     contractABI,
-    signer
+    provider.getSigner(0)
   );
   return vjkNFTContract;
 };
@@ -56,7 +57,6 @@ export const VjkNFTContractProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-        // getAllCollections();
       } else {
         console.log("No accounts found.");
       }
@@ -86,10 +86,17 @@ export const VjkNFTContractProvider = ({ children }) => {
   };
   const getAllCollections = async () => {
     try {
-      if (!ethereum)
-        return alert.error("Please install a Cryptocurrency Software Wallet");
-      const vjkNFTContract = getvjkNFTContract();
+      // if (!ethereum)
+      //   return alert.error("Please install a Cryptocurrency Software Wallet");
+      const customHttpProvider = new ethers.providers.JsonRpcProvider(
+        process.env.REACT_APP_GOERLI_RPC_URL
+      );
 
+      const vjkNFTContract = new ethers.Contract(
+        VjkNFT_address,
+        contractABI,
+        customHttpProvider ?? provider
+      );
       const totalSupplyBigNumber = await vjkNFTContract.totalSupply();
       const totalSupply = BigNumber(totalSupplyBigNumber._hex).c[0];
 
@@ -192,7 +199,7 @@ export const VjkNFTContractProvider = ({ children }) => {
         const APIConsumer = new ethers.Contract(
           APIConsumer_address,
           APIConsumer_ABI,
-          signer
+          provider.getSigner(0)
         );
         APIConsumer.once("RequestQuote", async (res) => {
           console.log("RequestQuote event fired!", res);
@@ -205,7 +212,11 @@ export const VjkNFTContractProvider = ({ children }) => {
         });
       } else if (mintSteps.painting) {
         // Set alert, when svg exists
-        const VRF = new ethers.Contract(VRF_address, VRF_ABI, signer);
+        const VRF = new ethers.Contract(
+          VRF_address,
+          VRF_ABI,
+          provider.getSigner(0)
+        );
         VRF.once("RequestSVG", async (res) => {
           console.log("RequestSVG event fired!", res);
           setMintSteps({
@@ -220,7 +231,7 @@ export const VjkNFTContractProvider = ({ children }) => {
         const vjkContract = new ethers.Contract(
           VjkNFT_address,
           contractABI,
-          signer
+          provider.getSigner(0)
         );
         vjkContract.once("Created", async (res) => {
           console.log("Created event fired!", res);
