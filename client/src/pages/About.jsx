@@ -154,7 +154,7 @@ export default function About(props) {
                 </Link>{" "}
                 Contract responsible for swapping ETH for ChainLink token. All
                 automation of our software is done using tools supported by
-                ChainLink Labs. Before starting any process, we need ChainLink
+                ChainLink. Before starting any process, we need ChainLink
                 Token.
               </Typography>
               <Typography variant="body1" mb={2}>
