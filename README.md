@@ -24,7 +24,11 @@ Our program consists of a group of smart contracts, which automatically interact
 ## ☕ Using VjkNFT
 
 To interact with our application and create a unique NFT go to:
+<<<<<<< HEAD
 [vjknft.web.app](https://[vjknft.web.app/).
+=======
+[vjknft.brunovjk.com](https://[vjknft.brunovjk.com/).
+>>>>>>> 1f7658796ffae922c26ede46dfba1b57e2c5fddc
 
 You can also clone this repository, change contracts in `smart_contracts` folder.
 
